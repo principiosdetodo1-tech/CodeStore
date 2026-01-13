@@ -1,2 +1,2 @@
-# mi-tienda-shopify
+# Codestore
 Mi página de ventas
