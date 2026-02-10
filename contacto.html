@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacte - FUSTES LA SALLE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #1a1a1a;
+            --color-secondary: #8B6F47;
+            --color-accent: #D4AF37;
+            --color-bg-light: #FAF8F5;
+            --color-bg-cream: #F5EFE7;
+            --color-text-dark: #1a1a1a;
+            --color-text-light: #666;
+            --color-white: #ffffff;
+            --color-success: #2D5016;
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Outfit', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--color-text-dark);
+            background: var(--color-bg-light);
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: var(--color-white);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+        
+        .nav-back {
+            color: var(--color-text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-back:hover {
+            color: var(--color-secondary);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .page-subtitle {
+            text-align: center;
+            color: var(--color-text-light);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+        
+        .contact-info {
+            background: var(--color-white);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .info-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 2rem;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--color-bg-cream);
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .info-item:hover {
+            transform: translateX(10px);
+        }
+        
+        .info-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+        
+        .info-content h3 {
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .info-content p {
+            color: var(--color-text-light);
+            line-height: 1.8;
+        }
+        
+        .info-content a {
+            color: var(--color-secondary);
+            text-decoration: none;
+        }
+        
+        .info-content a:hover {
+            text-decoration: underline;
+        }
+        
+        .contact-form {
+            background: var(--color-white);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .form-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+        
+        .required {
+            color: #C41E3A;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--color-bg-cream);
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-help {
+            font-size: 0.85rem;
+            color: var(--color-text-light);
+            margin-top: 0.3rem;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: var(--color-white);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: var(--font-body);
+            margin-top: 1rem;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .success-message {
+            background: var(--color-success);
+            color: var(--color-white);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .error-message {
+            background: #C41E3A;
+            color: var(--color-white);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .quick-topics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .topic-btn {
+            padding: 0.8rem;
+            background: var(--color-bg-cream);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        
+        .topic-btn:hover {
+            background: var(--color-accent);
+            color: var(--color-white);
+        }
+        
+        .topic-btn.active {
+            background: var(--color-accent);
+            color: var(--color-white);
+            border-color: var(--color-secondary);
+        }
+        
+        @media (max-width: 968px) {
+            .contact-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .quick-topics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="logo">FUSTES LA SALLE</a>
+            <a href="index.html" class="nav-back">← Tornar a la botiga</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">Contacta amb Nosaltres</h1>
+        <p class="page-subtitle">Estem aquí per ajudar-te amb qualsevol consulta sobre els nostres productes</p>
+
+        <div class="contact-layout">
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <h2 class="info-title">Informació de Contacte</h2>
+                
+                <div class="info-item">
+                    <div class="info-icon">📧</div>
+                    <div class="info-content">
+                        <h3>Correu Electrònic</h3>
+                        <p><a href="/cdn-cgi/l/email-protection#65031016110016090416040909004b160003000125090416040909004b060411"><span class="__cf_email__" data-cfemail="44223137302137282537252828216a372122212004282537252828216a272530">[email&#160;protected]</span></a></p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Respostem en menys de 24 hores</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">📱</div>
+                    <div class="info-content">
+                        <h3>Telèfon</h3>
+                        <p>+34 973 35 XX XX</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Disponible per consultes urgents</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">📍</div>
+                    <div class="info-content">
+                        <h3>Ubicació</h3>
+                        <p>La Seu d'Urgell - La Salle</p>
+                        <p>Lleida, Catalunya</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">🕐</div>
+                    <div class="info-content">
+                        <h3>Horari d'Atenció</h3>
+                        <p>Dilluns a Divendres</p>
+                        <p>15:00 - 19:30</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--color-text-light);">Cap de setmana tancat</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--color-bg-light); border-radius: 15px;">
+                    <h3 style="margin-bottom: 1rem; color: var(--color-primary);">💡 Consell Ràpid</h3>
+                    <p style="color: var(--color-text-light); line-height: 1.8;">
+                        Per a consultes sobre disponibilitat de productes, enviament o opcions de pagament, 
+                        omple el formulari i et respondrem el més aviat possible durant el nostre horari d'atenció.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form">
+                <h2 class="form-title">Envia'ns un Missatge</h2>
+                
+                <div class="success-message" id="successMessage">
+                    ✅ Missatge enviat correctament! Ens posarem en contacte aviat.
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    ❌ Si us plau, omple tots els camps obligatoris.
+                </div>
+                
+                <form id="contactForm" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label>Motiu de la consulta <span class="required">*</span></label>
+                        <div class="quick-topics">
+                            <button type="button" class="topic-btn" onclick="selectTopic(this, 'Disponibilitat de producte')">
+                                📦 Disponibilitat
+                            </button>
+                            <button type="button" class="topic-btn" onclick="selectTopic(this, 'Informació d\'enviament')">
+                                🚚 Enviament
+                            </button>
+                            <button type="button" class="topic-btn" onclick="selectTopic(this, 'Opcions de pagament')">
+                                💳 Pagament
+                            </button>
+                            <button type="button" class="topic-btn" onclick="selectTopic(this, 'Altres consultes')">
+                                💬 Altres
+                            </button>
+                        </div>
+                        <input type="hidden" id="topic" name="topic" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="name">Nom complet <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" placeholder="El teu nom" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Correu electrònic <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" placeholder="exemple@email.com" required>
+                        <div class="form-help">Utilitzarem aquest email per respondre't</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Telèfon (opcional)</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+34 600 000 000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Missatge <span class="required">*</span></label>
+                        <textarea id="message" name="message" placeholder="Explica'ns en què et podem ajudar..." required></textarea>
+                        <div class="form-help">Sigues el més específic possible per poder ajudar-te millor</div>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        Enviar Missatge 📨
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        let selectedTopic = '';
+        
+        function selectTopic(button, topic) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.topic-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            button.classList.add('active');
+            selectedTopic = topic;
+            document.getElementById('topic').value = topic;
+        }
+        
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // Get form values
+            const topic = document.getElementById('topic').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const message = document.getElementById('message').value;
+            
+            // Validate
+            if (!topic || !name || !email || !message) {
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+                setTimeout(() => {
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 3000);
+                return;
+            }
+            
+            // Disable button
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviant...';
+            
+            // Simulate sending
+            setTimeout(() => {
+                // Redirect to confirmation page
+                window.location.href = 'confirmacion-contacto.html';
+            }, 1500);
+        }
