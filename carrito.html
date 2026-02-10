@@ -554,37 +554,9 @@
             
             const subtotal = PRODUCT_PRICE * quantity;
             const total = subtotal + shippingCost;
-            const deliveryTime = SHIPPING_RATES[province].days;
             
-            // Crear email amb informació de la comanda
-            const email = "fusteslasalle.sefed@lasalle.cat";
-            const assumpte = "Comanda - Tauleta de Nit";
-            const cos = 
-                "COMANDA - FUSTES LA SALLE%0D%0A" +
-                "================================%0D%0A%0D%0A" +
-                "PRODUCTE:%0D%0A" +
-                "- Tauleta de Nit%0D%0A" +
-                "- Quantitat: " + quantity + " unitat(s)%0D%0A" +
-                "- Preu unitari: " + PRODUCT_PRICE + "€%0D%0A%0D%0A" +
-                "RESUM:%0D%0A" +
-                "- Subtotal: " + subtotal + "€%0D%0A" +
-                "- Enviament: " + shippingCost + "€%0D%0A" +
-                "- TOTAL: " + total + "€%0D%0A%0D%0A" +
-                "ENVIAMENT:%0D%0A" +
-                "- Província: " + document.getElementById('province').selectedOptions[0].text + "%0D%0A" +
-                "- Temps de lliurament: " + deliveryTime + "%0D%0A%0D%0A" +
-                "DADES DEL CLIENT:%0D%0A" +
-                "- Nom complet: %0D%0A" +
-                "- Telèfon: %0D%0A" +
-                "- Email: %0D%0A" +
-                "- Adreça completa: %0D%0A" +
-                "- Codi postal: %0D%0A%0D%0A" +
-                "COMENTARIS ADDICIONALS:%0D%0A" +
-                "%0D%0A%0D%0A" +
-                "Si us plau, confirmeu la comanda i indiqueu les opcions de pagament disponibles.%0D%0A%0D%0A" +
-                "Gràcies!";
-            
-            window.location.href = `mailto:${email}?subject=${assumpte}&body=${cos}`;
+            // Redirect to payment page with order details
+            window.location.href = `pago.html?qty=${quantity}&shipping=${shippingCost}&province=${province}`;
         }
     </script>
 </body>
