@@ -271,26 +271,45 @@
         }
         
         .topic-btn {
-            padding: 0.8rem;
+            padding: 1rem;
             background: var(--color-bg-cream);
-            border: 2px solid transparent;
-            border-radius: 10px;
+            border: 3px solid #ddd;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
             font-family: var(--font-body);
             font-size: 0.95rem;
             font-weight: 500;
+            color: var(--color-text-dark);
+            position: relative;
         }
         
         .topic-btn:hover {
-            background: var(--color-accent);
-            color: var(--color-white);
+            background: #e8dcc8;
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
         .topic-btn.active {
-            background: var(--color-accent);
-            color: var(--color-white);
-            border-color: var(--color-secondary);
+            background: var(--color-secondary) !important;
+            color: var(--color-white) !important;
+            border-color: var(--color-secondary) !important;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(139, 111, 71, 0.4) !important;
+            transform: scale(1.05) !important;
+        }
+        
+        .topic-btn.active::before {
+            content: '✓ ';
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-right: 0.3rem;
+        }
+        
+        .topic-btn.active:hover {
+            background: var(--color-secondary) !important;
+            transform: scale(1.05) !important;
         }
         
         @media (max-width: 968px) {
@@ -433,12 +452,15 @@
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         let selectedTopic = '';
         
         function selectTopic(button, topic) {
+            console.log('Selecting topic:', topic);
+            
             // Remove active class from all buttons
-            document.querySelectorAll('.topic-btn').forEach(btn => {
+            const allButtons = document.querySelectorAll('.topic-btn');
+            allButtons.forEach(btn => {
                 btn.classList.remove('active');
             });
             
@@ -446,10 +468,14 @@
             button.classList.add('active');
             selectedTopic = topic;
             document.getElementById('topic').value = topic;
+            
+            console.log('Topic selected:', topic);
+            console.log('Button has active class:', button.classList.contains('active'));
         }
         
         function handleSubmit(event) {
             event.preventDefault();
+            console.log('Form submitted');
             
             // Get form values
             const topic = document.getElementById('topic').value;
@@ -457,6 +483,8 @@
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
             const message = document.getElementById('message').value;
+            
+            console.log('Form values:', { topic, name, email, message });
             
             // Validate
             if (!topic || !name || !email || !message) {
@@ -468,14 +496,17 @@
                 return;
             }
             
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+            
             // Disable button
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Enviant...';
+            submitBtn.textContent = '✓ Redirigint...';
             
-            // Simulate sending
-            setTimeout(() => {
-                // Redirect to confirmation page
-                window.location.href = 'confirmacion-contacto.html';
-            }, 1500);
+            // Redirect immediately to confirmation page
+            console.log('Redirecting to confirmation page...');
+            window.location.href = 'confirmacion-contacto.html';
         }
+    </script>
