@@ -1,10 +1,10 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- * CHATBOT DE LUJO - Dark Luxury Edition (VERSIÓN CORREGIDA)
+ * CHATBOT DE LUJO - Dark Luxury Edition (VERSIÓN ACTUALIZADA)
  * ═══════════════════════════════════════════════════════════════
  * Diseñado para sitios estáticos en GitHub Pages
  * Integración con Google Gemini AI
- * Persistencia de conversaciones con localStorage
+ * Modelo: gemini-pro (compatible con todas las API Keys)
  * ═══════════════════════════════════════════════════════════════
  */
 
@@ -13,7 +13,10 @@
 // ═══════════════════════════════════════════════════════════════
 
 const API_KEY = 'AIzaSyDGSzWegNratlCjPCmscrBb-iIlw7wINdg'; // ⚠️ Reemplaza con tu API Key de Google AI Studio
-const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+
+// Modelo actualizado - usa gemini-pro que es compatible con todas las API Keys
+const API_MODEL = 'gemini-pro';
+const API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${API_MODEL}:generateContent`;
 
 // ═══════════════════════════════════════════════════════════════
 // 🎭 CONFIGURACIÓN DEL BOT (PERSONALIDAD Y NORMAS)
@@ -564,21 +567,6 @@ function injectStyles() {
         }
         
         /* ─────────────────────────────────────────────────────────── */
-        /* Mensaje de Error                                             */
-        /* ─────────────────────────────────────────────────────────── */
-        
-        .luxury-error-message {
-            background: rgba(220, 38, 38, 0.1);
-            border: 1px solid rgba(220, 38, 38, 0.3);
-            border-radius: 12px;
-            padding: 12px 16px;
-            color: #FCA5A5;
-            font-size: 13px;
-            line-height: 1.5;
-            margin: 10px 0;
-        }
-        
-        /* ─────────────────────────────────────────────────────────── */
         /* Responsive Design                                            */
         /* ─────────────────────────────────────────────────────────── */
         
@@ -673,7 +661,7 @@ function createChatInterface() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 🤖 LÓGICA DE LA IA (Google Gemini) - CORREGIDA
+// 🤖 LÓGICA DE LA IA (Google Gemini) - VERSIÓN ACTUALIZADA
 // ═══════════════════════════════════════════════════════════════
 
 class GeminiAI {
@@ -686,26 +674,28 @@ class GeminiAI {
 
             const conversationHistory = ChatStorage.getConversationContext();
             
-            // Estructura corregida del request
+            // Construir el prompt completo con contexto
+            let fullPrompt = SISTEMA_PROMPT + '\n\n';
+            
+            // Agregar historial de conversación al prompt
+            if (conversationHistory.length > 0) {
+                fullPrompt += 'Historial de conversación:\n';
+                conversationHistory.forEach(msg => {
+                    const role = msg.role === 'user' ? 'Usuario' : 'Asistente';
+                    fullPrompt += `${role}: ${msg.parts[0].text}\n`;
+                });
+                fullPrompt += '\n';
+            }
+            
+            fullPrompt += `Usuario: ${userMessage}\nAsistente:`;
+
+            // Estructura simplificada del request para gemini-pro
             const requestBody = {
-                contents: [
-                    // Sistema prompt como mensaje inicial
-                    {
-                        role: 'user',
-                        parts: [{ text: SISTEMA_PROMPT }]
-                    },
-                    {
-                        role: 'model',
-                        parts: [{ text: 'Entendido. Actuaré como un asistente de lujo profesional y sofisticado.' }]
-                    },
-                    // Historial de conversación
-                    ...conversationHistory,
-                    // Mensaje actual del usuario
-                    {
-                        role: 'user',
-                        parts: [{ text: userMessage }]
-                    }
-                ],
+                contents: [{
+                    parts: [{
+                        text: fullPrompt
+                    }]
+                }],
                 generationConfig: {
                     temperature: 0.7,
                     topK: 40,
@@ -732,8 +722,9 @@ class GeminiAI {
                 ]
             };
 
-            console.log('🚀 Enviando mensaje a Gemini...', {
-                endpoint: `${API_ENDPOINT}?key=${API_KEY.substring(0, 10)}...`,
+            console.log('🚀 Enviando mensaje a Gemini Pro...', {
+                modelo: API_MODEL,
+                endpoint: API_ENDPOINT,
                 messageLength: userMessage.length,
                 historyLength: conversationHistory.length
             });
@@ -771,14 +762,19 @@ class GeminiAI {
 
                     // Mensajes de error específicos
                     if (errorCode === 400) {
-                        if (errorMessage.includes('API key')) {
+                        if (errorMessage.includes('API key') || errorMessage.includes('API_KEY')) {
                             throw new Error('API_KEY_INVALID');
+                        }
+                        if (errorMessage.includes('model') || errorMessage.includes('not found')) {
+                            throw new Error('MODEL_NOT_AVAILABLE');
                         }
                         throw new Error(`Error en la solicitud: ${errorMessage}`);
                     } else if (errorCode === 403) {
                         throw new Error('API_KEY_PERMISSION_DENIED');
                     } else if (errorCode === 429) {
                         throw new Error('RATE_LIMIT_EXCEEDED');
+                    } else if (errorCode === 404) {
+                        throw new Error('MODEL_NOT_FOUND');
                     }
                     
                     throw new Error(errorMessage);
@@ -825,8 +821,12 @@ class GeminiAI {
                 return '🔑 **API Key inválida**\n\nLa clave API proporcionada no es válida. Por favor:\n\n1. Verifica que copiaste la clave completa\n2. Asegúrate de que la API está activada en Google Cloud\n3. Genera una nueva clave si es necesario';
             }
             
+            if (error.message === 'MODEL_NOT_AVAILABLE' || error.message === 'MODEL_NOT_FOUND') {
+                return '🤖 **Modelo no disponible**\n\nEl modelo gemini-pro no está disponible para tu API Key.\n\n**Soluciones:**\n1. Verifica que tu proyecto tenga acceso a la API de Generative Language\n2. Asegúrate de que la API esté habilitada en Google Cloud Console\n3. Intenta generar una nueva API Key\n\nVisita: https://console.cloud.google.com/apis/library/generativelanguage.googleapis.com';
+            }
+            
             if (error.message === 'API_KEY_PERMISSION_DENIED') {
-                return '🚫 **Acceso denegado**\n\nTu API Key no tiene permisos para usar Gemini. Verifica:\n\n1. Que la API de Generative Language esté habilitada\n2. Que tu proyecto tenga cuota disponible\n3. Que no haya restricciones de IP';
+                return '🚫 **Acceso denegado**\n\nTu API Key no tiene permisos suficientes.\n\n**Verifica:**\n1. Que la API de Generative Language esté habilitada\n2. Que tu proyecto tenga cuota disponible\n3. Que no haya restricciones de IP o dominio\n\nRevisa: https://console.cloud.google.com/';
             }
             
             if (error.message === 'RATE_LIMIT_EXCEEDED') {
@@ -848,7 +848,7 @@ class GeminiAI {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 💬 GESTIÓN DEL CHAT - MEJORADA
+// 💬 GESTIÓN DEL CHAT
 // ═══════════════════════════════════════════════════════════════
 
 class ChatManager {
@@ -1032,11 +1032,12 @@ class ChatManager {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 🎯 INICIALIZACIÓN - MEJORADA
+// 🎯 INICIALIZACIÓN
 // ═══════════════════════════════════════════════════════════════
 
 function initializeLuxuryChatbot() {
     console.log('🚀 Iniciando Luxury Chatbot...');
+    console.log('📋 Modelo: ' + API_MODEL);
     
     // Validar API Key y mostrar advertencia
     if (!API_KEY || API_KEY === 'TU_API_KEY_AQUI') {
@@ -1102,6 +1103,7 @@ function initializeLuxuryChatbot() {
         
         console.log('✅ Event listeners configurados');
         console.log('✨ Luxury Chatbot inicializado correctamente');
+        console.log('🤖 Usando modelo: gemini-pro');
         
     } catch (error) {
         console.error('❌ Error al inicializar el chatbot:', error);
