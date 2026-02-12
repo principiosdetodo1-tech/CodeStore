@@ -15,7 +15,7 @@
 const API_KEY = 'AIzaSyDGSzWegNratlCjPCmscrBb-iIlw7wINdg'; // ⚠️ Reemplaza con tu API Key de Google AI Studio
 
 // Modelo actualizado - usa gemini-pro que es compatible con todas las API Keys
-const API_MODEL = 'gemini-pro';
+const API_MODEL = 'gemini-2.0-flash';
 const API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${API_MODEL}:generateContent`;
 
 // ═══════════════════════════════════════════════════════════════
