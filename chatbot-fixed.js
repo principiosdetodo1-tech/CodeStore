@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- * CHATBOT DE LUJO - Dark Luxury Edition
+ * CHATBOT DE LUJO - Dark Luxury Edition (VERSIÓN CORREGIDA)
  * ═══════════════════════════════════════════════════════════════
  * Diseñado para sitios estáticos en GitHub Pages
  * Integración con Google Gemini AI
@@ -56,8 +56,13 @@ class ChatStorage {
     }
     
     static getHistory() {
-        const stored = localStorage.getItem(this.STORAGE_KEY);
-        return stored ? JSON.parse(stored) : [];
+        try {
+            const stored = localStorage.getItem(this.STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        } catch (error) {
+            console.error('Error al leer historial:', error);
+            return [];
+        }
     }
     
     static clearHistory() {
@@ -65,7 +70,11 @@ class ChatStorage {
     }
     
     static getConversationContext() {
-        return this.getHistory().map(msg => ({
+        const history = this.getHistory();
+        // Limitar a los últimos 10 mensajes para no exceder límites
+        const recentHistory = history.slice(-10);
+        
+        return recentHistory.map(msg => ({
             role: msg.role === 'user' ? 'user' : 'model',
             parts: [{ text: msg.content }]
         }));
@@ -555,6 +564,21 @@ function injectStyles() {
         }
         
         /* ─────────────────────────────────────────────────────────── */
+        /* Mensaje de Error                                             */
+        /* ─────────────────────────────────────────────────────────── */
+        
+        .luxury-error-message {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #FCA5A5;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 10px 0;
+        }
+        
+        /* ─────────────────────────────────────────────────────────── */
         /* Responsive Design                                            */
         /* ─────────────────────────────────────────────────────────── */
         
@@ -649,21 +673,34 @@ function createChatInterface() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 🤖 LÓGICA DE LA IA (Google Gemini)
+// 🤖 LÓGICA DE LA IA (Google Gemini) - CORREGIDA
 // ═══════════════════════════════════════════════════════════════
 
 class GeminiAI {
     static async sendMessage(userMessage) {
         try {
+            // Validar que la API Key esté configurada
+            if (!API_KEY || API_KEY === 'TU_API_KEY_AQUI') {
+                throw new Error('API_KEY_NOT_CONFIGURED');
+            }
+
             const conversationHistory = ChatStorage.getConversationContext();
             
+            // Estructura corregida del request
             const requestBody = {
                 contents: [
+                    // Sistema prompt como mensaje inicial
                     {
                         role: 'user',
                         parts: [{ text: SISTEMA_PROMPT }]
                     },
+                    {
+                        role: 'model',
+                        parts: [{ text: 'Entendido. Actuaré como un asistente de lujo profesional y sofisticado.' }]
+                    },
+                    // Historial de conversación
                     ...conversationHistory,
+                    // Mensaje actual del usuario
                     {
                         role: 'user',
                         parts: [{ text: userMessage }]
@@ -673,9 +710,33 @@ class GeminiAI {
                     temperature: 0.7,
                     topK: 40,
                     topP: 0.95,
-                    maxOutputTokens: 1024,
-                }
+                    maxOutputTokens: 2048,
+                },
+                safetySettings: [
+                    {
+                        category: "HARM_CATEGORY_HARASSMENT",
+                        threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                    },
+                    {
+                        category: "HARM_CATEGORY_HATE_SPEECH",
+                        threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                    },
+                    {
+                        category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                        threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                    },
+                    {
+                        category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+                        threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                    }
+                ]
             };
+
+            console.log('🚀 Enviando mensaje a Gemini...', {
+                endpoint: `${API_ENDPOINT}?key=${API_KEY.substring(0, 10)}...`,
+                messageLength: userMessage.length,
+                historyLength: conversationHistory.length
+            });
 
             const response = await fetch(`${API_ENDPOINT}?key=${API_KEY}`, {
                 method: 'POST',
@@ -685,27 +746,109 @@ class GeminiAI {
                 body: JSON.stringify(requestBody)
             });
 
-            if (!response.ok) {
-                throw new Error(`Error de API: ${response.status}`);
-            }
+            console.log('📡 Respuesta recibida:', {
+                status: response.status,
+                ok: response.ok,
+                statusText: response.statusText
+            });
 
             const data = await response.json();
             
-            if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-                throw new Error('Respuesta inválida de la API');
+            // Log de la respuesta completa para debugging
+            console.log('📦 Datos de respuesta:', data);
+
+            if (!response.ok) {
+                // Manejo específico de errores de la API
+                if (data.error) {
+                    const errorMessage = data.error.message || 'Error desconocido';
+                    const errorCode = data.error.code || response.status;
+                    
+                    console.error('❌ Error de API:', {
+                        code: errorCode,
+                        message: errorMessage,
+                        details: data.error
+                    });
+
+                    // Mensajes de error específicos
+                    if (errorCode === 400) {
+                        if (errorMessage.includes('API key')) {
+                            throw new Error('API_KEY_INVALID');
+                        }
+                        throw new Error(`Error en la solicitud: ${errorMessage}`);
+                    } else if (errorCode === 403) {
+                        throw new Error('API_KEY_PERMISSION_DENIED');
+                    } else if (errorCode === 429) {
+                        throw new Error('RATE_LIMIT_EXCEEDED');
+                    }
+                    
+                    throw new Error(errorMessage);
+                }
+                throw new Error(`Error HTTP: ${response.status}`);
             }
 
-            return data.candidates[0].content.parts[0].text;
+            // Validar la estructura de la respuesta
+            if (!data.candidates || !data.candidates[0]) {
+                console.error('❌ Estructura de respuesta inválida:', data);
+                throw new Error('La API no devolvió candidatos de respuesta');
+            }
+
+            const candidate = data.candidates[0];
+
+            // Verificar si la respuesta fue bloqueada
+            if (candidate.finishReason === 'SAFETY') {
+                throw new Error('CONTENT_BLOCKED_SAFETY');
+            }
+
+            if (!candidate.content || !candidate.content.parts || !candidate.content.parts[0]) {
+                console.error('❌ Contenido de respuesta inválido:', candidate);
+                throw new Error('La respuesta no contiene contenido válido');
+            }
+
+            const responseText = candidate.content.parts[0].text;
+            
+            if (!responseText || responseText.trim() === '') {
+                throw new Error('La respuesta está vacía');
+            }
+
+            console.log('✅ Mensaje procesado exitosamente');
+            return responseText;
             
         } catch (error) {
-            console.error('Error en la comunicación con Gemini:', error);
-            return 'Disculpa, ha ocurrido un error. Por favor, verifica tu conexión y que la API Key sea válida.';
+            console.error('💥 Error en GeminiAI.sendMessage:', error);
+            
+            // Mensajes de error personalizados
+            if (error.message === 'API_KEY_NOT_CONFIGURED') {
+                return '⚠️ **Configuración requerida**\n\nPor favor, configura tu API Key de Google Gemini en el archivo chatbot.js.\n\n1. Obtén tu clave en: https://makersuite.google.com/app/apikey\n2. Reemplaza `TU_API_KEY_AQUI` con tu clave';
+            }
+            
+            if (error.message === 'API_KEY_INVALID') {
+                return '🔑 **API Key inválida**\n\nLa clave API proporcionada no es válida. Por favor:\n\n1. Verifica que copiaste la clave completa\n2. Asegúrate de que la API está activada en Google Cloud\n3. Genera una nueva clave si es necesario';
+            }
+            
+            if (error.message === 'API_KEY_PERMISSION_DENIED') {
+                return '🚫 **Acceso denegado**\n\nTu API Key no tiene permisos para usar Gemini. Verifica:\n\n1. Que la API de Generative Language esté habilitada\n2. Que tu proyecto tenga cuota disponible\n3. Que no haya restricciones de IP';
+            }
+            
+            if (error.message === 'RATE_LIMIT_EXCEEDED') {
+                return '⏱️ **Límite de solicitudes excedido**\n\nHas enviado demasiadas solicitudes. Por favor espera un momento antes de intentar nuevamente.';
+            }
+            
+            if (error.message === 'CONTENT_BLOCKED_SAFETY') {
+                return '🛡️ **Contenido bloqueado**\n\nTu mensaje fue bloqueado por las políticas de seguridad. Por favor, reformula tu pregunta.';
+            }
+            
+            if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                return '🌐 **Error de conexión**\n\nNo se pudo conectar con el servidor. Verifica:\n\n1. Tu conexión a internet\n2. Que no haya bloqueadores de contenido activos\n3. La configuración CORS de tu servidor';
+            }
+            
+            // Error genérico con detalles
+            return `❌ **Error al procesar tu mensaje**\n\n${error.message}\n\nSi el problema persiste, revisa la consola del navegador (F12) para más detalles.`;
         }
     }
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 💬 GESTIÓN DEL CHAT
+// 💬 GESTIÓN DEL CHAT - MEJORADA
 // ═══════════════════════════════════════════════════════════════
 
 class ChatManager {
@@ -747,7 +890,7 @@ class ChatManager {
         // Auto-resize del textarea
         this.chatInput.addEventListener('input', () => {
             this.chatInput.style.height = 'auto';
-            this.chatInput.style.height = this.chatInput.scrollHeight + 'px';
+            this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 120) + 'px';
         });
     }
     
@@ -776,19 +919,26 @@ class ChatManager {
         // Mostrar indicador de escritura
         this.showTypingIndicator();
         
-        // Obtener respuesta de la IA
-        const response = await GeminiAI.sendMessage(message);
-        
-        // Remover indicador de escritura
-        this.hideTypingIndicator();
-        
-        // Agregar respuesta del bot
-        this.addMessageToUI('bot', response);
-        ChatStorage.saveMessage('bot', response);
-        
-        this.isProcessing = false;
-        this.sendBtn.disabled = false;
-        this.chatInput.focus();
+        try {
+            // Obtener respuesta de la IA
+            const response = await GeminiAI.sendMessage(message);
+            
+            // Remover indicador de escritura
+            this.hideTypingIndicator();
+            
+            // Agregar respuesta del bot
+            this.addMessageToUI('bot', response);
+            ChatStorage.saveMessage('bot', response);
+            
+        } catch (error) {
+            console.error('Error al procesar mensaje:', error);
+            this.hideTypingIndicator();
+            this.addMessageToUI('bot', '❌ Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo.');
+        } finally {
+            this.isProcessing = false;
+            this.sendBtn.disabled = false;
+            this.chatInput.focus();
+        }
     }
     
     addMessageToUI(role, content, shouldScroll = true) {
@@ -810,8 +960,31 @@ class ChatManager {
     }
     
     formatMessage(text) {
-        // Convertir saltos de línea a <br>
-        return text.replace(/\n/g, '<br>');
+        // Escapar HTML para seguridad
+        const escapeHtml = (unsafe) => {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        };
+        
+        let formatted = escapeHtml(text);
+        
+        // Convertir markdown básico
+        // Negritas
+        formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        // Cursivas
+        formatted = formatted.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        // Código inline
+        formatted = formatted.replace(/`(.+?)`/g, '<code>$1</code>');
+        // Enlaces
+        formatted = formatted.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+        // Saltos de línea
+        formatted = formatted.replace(/\n/g, '<br>');
+        
+        return formatted;
     }
     
     showTypingIndicator() {
@@ -839,7 +1012,9 @@ class ChatManager {
     }
     
     scrollToBottom() {
-        this.chatBody.scrollTop = this.chatBody.scrollHeight;
+        requestAnimationFrame(() => {
+            this.chatBody.scrollTop = this.chatBody.scrollHeight;
+        });
     }
     
     clearChat() {
@@ -857,47 +1032,81 @@ class ChatManager {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 🎯 INICIALIZACIÓN
+// 🎯 INICIALIZACIÓN - MEJORADA
 // ═══════════════════════════════════════════════════════════════
 
 function initializeLuxuryChatbot() {
-    // Validar API Key
-    if (API_KEY === 'TU_API_KEY_AQUI') {
-        console.error('⚠️ CHATBOT ERROR: Por favor, configura tu API Key de Google Gemini en chatbot.js');
-        return;
+    console.log('🚀 Iniciando Luxury Chatbot...');
+    
+    // Validar API Key y mostrar advertencia
+    if (!API_KEY || API_KEY === 'TU_API_KEY_AQUI') {
+        console.warn(`
+╔═══════════════════════════════════════════════════════════════╗
+║  ⚠️  CHATBOT: API KEY NO CONFIGURADA                          ║
+╟───────────────────────────────────────────────────────────────╢
+║  Para usar este chatbot necesitas:                            ║
+║                                                                ║
+║  1. Obtener una API Key de Google Gemini:                     ║
+║     👉 https://makersuite.google.com/app/apikey              ║
+║                                                                ║
+║  2. Abrir el archivo chatbot.js                               ║
+║                                                                ║
+║  3. Buscar la línea:                                          ║
+║     const API_KEY = 'TU_API_KEY_AQUI';                        ║
+║                                                                ║
+║  4. Reemplazar 'TU_API_KEY_AQUI' con tu clave real           ║
+║                                                                ║
+║  El chatbot funcionará, pero mostrará mensajes de error       ║
+║  hasta que configures la API Key correctamente.               ║
+╚═══════════════════════════════════════════════════════════════╝
+        `);
     }
     
-    // Inyectar estilos
-    injectStyles();
-    
-    // Crear interfaz
-    createChatInterface();
-    
-    // Inicializar gestor del chat
-    const chatManager = new ChatManager();
-    
-    // Event Listeners para controles
-    const toggleBtn = document.getElementById('luxuryChatToggle');
-    const closeBtn = document.getElementById('luxuryCloseChat');
-    const clearBtn = document.getElementById('luxuryClearChat');
-    const chatWindow = document.getElementById('luxuryChatWindow');
-    
-    toggleBtn.addEventListener('click', () => {
-        chatWindow.classList.toggle('open');
-        if (chatWindow.classList.contains('open')) {
-            document.getElementById('luxuryChatInput').focus();
+    try {
+        // Inyectar estilos
+        injectStyles();
+        console.log('✅ Estilos inyectados');
+        
+        // Crear interfaz
+        createChatInterface();
+        console.log('✅ Interfaz creada');
+        
+        // Inicializar gestor del chat
+        const chatManager = new ChatManager();
+        console.log('✅ Chat Manager inicializado');
+        
+        // Event Listeners para controles
+        const toggleBtn = document.getElementById('luxuryChatToggle');
+        const closeBtn = document.getElementById('luxuryCloseChat');
+        const clearBtn = document.getElementById('luxuryClearChat');
+        const chatWindow = document.getElementById('luxuryChatWindow');
+        
+        if (!toggleBtn || !closeBtn || !clearBtn || !chatWindow) {
+            throw new Error('No se pudieron encontrar todos los elementos del DOM');
         }
-    });
-    
-    closeBtn.addEventListener('click', () => {
-        chatWindow.classList.remove('open');
-    });
-    
-    clearBtn.addEventListener('click', () => {
-        chatManager.clearChat();
-    });
-    
-    console.log('✨ Luxury Chatbot inicializado correctamente');
+        
+        toggleBtn.addEventListener('click', () => {
+            chatWindow.classList.toggle('open');
+            if (chatWindow.classList.contains('open')) {
+                document.getElementById('luxuryChatInput').focus();
+            }
+        });
+        
+        closeBtn.addEventListener('click', () => {
+            chatWindow.classList.remove('open');
+        });
+        
+        clearBtn.addEventListener('click', () => {
+            chatManager.clearChat();
+        });
+        
+        console.log('✅ Event listeners configurados');
+        console.log('✨ Luxury Chatbot inicializado correctamente');
+        
+    } catch (error) {
+        console.error('❌ Error al inicializar el chatbot:', error);
+        alert('Error al inicializar el chatbot. Revisa la consola para más detalles.');
+    }
 }
 
 // ═══════════════════════════════════════════════════════════════
