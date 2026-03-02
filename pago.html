@@ -3,594 +3,437 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagament Segur - FUSTES LA SALLE</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Pagament — Fustes La Salle</title>
     <style>
         :root {
-            --color-primary: #1a1a1a;
-            --color-secondary: #8B6F47;
-            --color-accent: #D4AF37;
-            --color-bg-light: #FAF8F5;
-            --color-bg-cream: #F5EFE7;
-            --color-text-dark: #1a1a1a;
-            --color-text-light: #666;
-            --color-white: #ffffff;
-            --color-success: #2D5016;
-            --font-display: 'Playfair Display', serif;
-            --font-body: 'Outfit', sans-serif;
+            --c-dark:    #1a1918;
+            --c-darker:  #242323;
+            --c-grey:    #525254;
+            --c-light:   #959595;
+            --c-mist:    #AEA7A3;
+            --c-warm:    #795238;
+            --c-gold:    #C9A96E;
+            --c-gold-lt: #E8D5A3;
+            --c-white:   #FAFAFA;
+            --ease-silk: cubic-bezier(0.23, 1, 0.32, 1);
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: var(--font-body);
-            color: var(--color-text-dark);
-            background: linear-gradient(135deg, #FAF8F5 0%, #F5EFE7 100%);
+            font-family: 'Times New Roman', Times, serif;
+            background: var(--c-dark);
+            color: var(--c-mist);
             line-height: 1.6;
+            overflow-x: hidden;
             min-height: 100vh;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--c-darker); }
+        ::-webkit-scrollbar-thumb { background: var(--c-gold); border-radius: 2px; }
+
+        .cursor-glow {
+            position: fixed; width: 320px; height: 320px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,169,110,0.07) 0%, transparent 70%);
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
         }
-        
-        @keyframes slideIn {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
+
+        /* NAVBAR */
         .navbar {
-            background: var(--color-white);
-            padding: 1.5rem 2rem;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
-            animation: fadeIn 0.6s ease;
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(26,25,24,0.93);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(201,169,110,0.12);
         }
-        
-        .navbar-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .navbar-inner {
+            max-width: 1440px; margin: 0 auto;
+            padding: 0 3rem; height: 84px;
+            display: flex; align-items: center; justify-content: space-between;
         }
-        
-        .logo {
-            font-family: var(--font-display);
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            text-decoration: none;
-        }
-        
+        .logo-img { height: 64px; width: auto; object-fit: contain; }
         .secure-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--color-success);
-            font-weight: 600;
-            font-size: 0.9rem;
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--c-gold);
         }
-        
-        .container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-            animation: fadeIn 0.8s ease 0.2s both;
+
+        /* PROGRESS */
+        .progress-wrap {
+            max-width: 600px; margin: 0 auto; padding: 3rem 3rem 1rem;
         }
-        
-        .payment-layout {
-            display: grid;
-            grid-template-columns: 1.3fr 1fr;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        
-        .payment-form-section {
-            background: var(--color-white);
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        }
-        
-        .section-title {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 0.5rem;
-        }
-        
-        .section-subtitle {
-            color: var(--color-text-light);
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-        
         .progress-bar {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 3rem;
-            position: relative;
+            display: flex; justify-content: space-between;
+            align-items: flex-start; position: relative;
         }
-        
         .progress-bar::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--color-bg-cream);
-            z-index: 0;
+            content: ''; position: absolute; top: 15px; left: 0; right: 0;
+            height: 1px; background: rgba(174,167,163,0.12); z-index: 0;
         }
-        
         .progress-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 1;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 8px; position: relative; z-index: 1;
         }
-        
         .step-circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--color-white);
-            border: 3px solid var(--color-bg-cream);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            transition: all 0.3s;
+            width: 32px; height: 32px; border-radius: 50%;
+            border: 1px solid rgba(174,167,163,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; color: var(--c-grey);
+            background: var(--c-dark); transition: all 0.3s;
         }
-        
         .step-circle.active {
-            background: var(--color-accent);
-            border-color: var(--color-accent);
-            color: var(--color-white);
-            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+            border-color: var(--c-gold); color: var(--c-gold);
+            box-shadow: 0 0 0 3px rgba(201,169,110,0.12);
         }
-        
-        .step-circle.completed {
-            background: var(--color-success);
-            border-color: var(--color-success);
-            color: var(--color-white);
+        .step-circle.done {
+            background: var(--c-gold); border-color: var(--c-gold);
+            color: var(--c-dark); font-weight: 700;
         }
-        
         .step-label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--color-text-light);
+            font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--c-grey);
         }
-        
-        .form-section {
-            margin-bottom: 2.5rem;
-            animation: slideIn 0.6s ease;
+        .step-label.active { color: var(--c-gold); }
+
+        /* LAYOUT */
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 2rem 3rem 6rem;
         }
-        
-        .form-section-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--color-primary);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .payment-layout {
+            display: grid; grid-template-columns: 1.4fr 1fr;
+            gap: 2rem; align-items: start;
         }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
+
+        /* FORM PANEL */
+        .form-panel {
+            background: var(--c-darker);
+            border: 1px solid rgba(174,167,163,0.08);
+            border-radius: 4px; overflow: hidden;
         }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
+        .panel-header {
+            padding: 1.8rem 2.5rem;
+            border-bottom: 1px solid rgba(174,167,163,0.08);
         }
-        
+        .panel-title {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 1.8rem; font-weight: 400; color: var(--c-white);
+            letter-spacing: 0.02em; margin-bottom: 4px;
+        }
+        .panel-sub {
+            font-size: 0.78rem; color: var(--c-grey); letter-spacing: 0.04em;
+        }
+        .panel-body { padding: 2.5rem; }
+
+        /* PAYMENT METHOD SELECTOR */
+        .method-label {
+            font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--c-gold); margin-bottom: 1rem;
+        }
+        .payment-methods {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 10px; margin-bottom: 2.5rem;
+        }
+        .payment-method {
+            padding: 1.2rem 1rem; text-align: center; cursor: pointer;
+            border: 1px solid rgba(174,167,163,0.12); border-radius: 3px;
+            transition: all 0.3s; background: rgba(26,25,24,0.6);
+        }
+        .payment-method:hover { border-color: rgba(201,169,110,0.3); }
+        .payment-method.active {
+            border-color: var(--c-gold);
+            background: rgba(201,169,110,0.06);
+        }
+        .method-icon { font-size: 1.5rem; margin-bottom: 6px; opacity: 0.7; }
+        .method-name {
+            font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--c-mist);
+        }
+        .payment-method.active .method-name { color: var(--c-gold); }
+
+        /* FORM FIELDS */
+        .form-block { margin-bottom: 2.5rem; }
+        .form-block-title {
+            font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--c-gold); margin-bottom: 1.2rem; padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(201,169,110,0.12);
+        }
+        .form-group { margin-bottom: 1.2rem; }
         .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--color-primary);
-            font-size: 0.9rem;
+            display: block; margin-bottom: 6px;
+            font-size: 0.75rem; color: var(--c-light); letter-spacing: 0.06em;
         }
-        
-        .required {
-            color: #C41E3A;
-        }
-        
+        .required { color: rgba(201,169,110,0.7); }
         .form-group input,
         .form-group select {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--color-bg-cream);
-            border-radius: 10px;
-            font-family: var(--font-body);
-            font-size: 1rem;
-            transition: all 0.3s;
-            background: var(--color-white);
+            width: 100%; padding: 11px 14px;
+            background: rgba(26,25,24,0.7);
+            border: 1px solid rgba(174,167,163,0.14); border-radius: 2px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.9rem; color: var(--c-white);
+            transition: border-color 0.3s;
         }
-        
+        .form-group input::placeholder { color: var(--c-grey); }
         .form-group input:focus,
         .form-group select:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+            outline: none; border-color: var(--c-gold);
         }
-        
-        .card-input {
-            position: relative;
+        .form-group select { color: var(--c-mist); cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23AEA7A3' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 14px center;
+            background-color: rgba(26,25,24,0.7);
         }
-        
+        .form-group select option { background: #242323; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .card-wrap { position: relative; }
         .card-icons {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            gap: 0.5rem;
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            display: flex; gap: 6px;
         }
-        
         .card-icon {
-            width: 35px;
-            height: 22px;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 700;
-            opacity: 0.4;
-            transition: opacity 0.3s;
+            width: 32px; height: 20px; border-radius: 3px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.55rem; font-weight: 700; opacity: 0.3; transition: opacity 0.3s;
         }
-        
-        .card-icon.active {
-            opacity: 1;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .visa-icon {
-            background: linear-gradient(135deg, #1A1F71 0%, #0066B2 100%);
-            color: white;
-        }
-        
-        .mastercard-icon {
-            background: linear-gradient(135deg, #EB001B 0%, #F79E1B 100%);
-            color: white;
-        }
-        
-        .amex-icon {
-            background: linear-gradient(135deg, #006FCF 0%, #0099CC 100%);
-            color: white;
-        }
-        
-        .payment-methods {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .payment-method {
-            padding: 1.5rem;
-            border: 2px solid var(--color-bg-cream);
-            border-radius: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: var(--color-white);
-        }
-        
-        .payment-method:hover {
-            border-color: var(--color-accent);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        
-        .payment-method.active {
-            border-color: var(--color-accent);
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
-        }
-        
-        .payment-method-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .payment-method-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--color-primary);
-        }
-        
-        .order-summary {
-            background: var(--color-white);
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            height: fit-content;
-            position: sticky;
-            top: 100px;
-        }
-        
-        .summary-title {
-            font-family: var(--font-display);
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 1.5rem;
-        }
-        
-        .summary-item {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--color-bg-cream);
-        }
-        
-        .item-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            object-fit: cover;
-            background: var(--color-bg-cream);
-        }
-        
-        .item-info h4 {
-            font-weight: 600;
-            color: var(--color-primary);
-            margin-bottom: 0.3rem;
-        }
-        
-        .item-info p {
-            color: var(--color-text-light);
-            font-size: 0.9rem;
-        }
-        
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--color-bg-cream);
-        }
-        
-        .summary-row.total {
-            border-bottom: none;
-            border-top: 2px solid var(--color-primary);
-            margin-top: 1rem;
-            padding-top: 1.5rem;
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-        
-        .summary-label {
-            color: var(--color-text-light);
-        }
-        
-        .summary-value {
-            font-weight: 600;
-            color: var(--color-primary);
-        }
-        
-        .discount-value {
-            color: var(--color-success);
-        }
-        
+        .card-icon.active { opacity: 1; }
+        .ci-visa { background: linear-gradient(135deg,#1A1F71,#0066B2); color:#fff; }
+        .ci-mc   { background: linear-gradient(135deg,#EB001B,#F79E1B); color:#fff; }
+        .ci-amex { background: linear-gradient(135deg,#006FCF,#0099CC); color:#fff; }
+
+        /* SUBMIT */
         .btn-pay {
-            width: 100%;
-            padding: 1.3rem;
-            background: linear-gradient(135deg, var(--color-success) 0%, #4CAF50 100%);
-            color: var(--color-white);
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: var(--font-body);
-            margin-top: 1rem;
-            box-shadow: 0 5px 20px rgba(45, 80, 22, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+            width: 100%; padding: 16px;
+            background: var(--c-gold); color: var(--c-dark);
+            border: none; border-radius: 2px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.88rem; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            cursor: pointer; transition: all 0.35s var(--ease-silk);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            margin-top: 0.5rem;
         }
-        
         .btn-pay:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(45, 80, 22, 0.4);
+            background: var(--c-gold-lt); transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(201,169,110,0.22);
         }
-        
-        .btn-pay:active {
-            transform: translateY(0);
+        .btn-pay:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .security-row {
+            display: flex; justify-content: center; gap: 24px;
+            margin-top: 16px;
         }
-        
-        .security-badges {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--color-bg-cream);
+        .sec-item {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-grey);
         }
-        
-        .security-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-size: 0.8rem;
-            color: var(--color-text-light);
+
+        /* ORDER SUMMARY */
+        .order-summary {
+            background: var(--c-darker);
+            border: 1px solid rgba(174,167,163,0.08);
+            border-radius: 4px; overflow: hidden;
+            position: sticky; top: 104px;
         }
-        
-        .trust-seal {
-            background: var(--color-bg-light);
-            padding: 1.5rem;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 1.5rem;
+        .summary-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(174,167,163,0.08);
         }
-        
-        .trust-seal-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--color-primary);
+        .summary-title {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 1.4rem; font-weight: 400; color: var(--c-white);
         }
-        
-        .trust-seal-text {
+        .summary-product {
+            display: flex; gap: 1rem; padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(174,167,163,0.06); align-items: center;
+        }
+        .summary-product-img {
+            width: 72px; height: 72px; object-fit: cover;
+            border-radius: 3px; border: 1px solid rgba(174,167,163,0.1); flex-shrink: 0;
+        }
+        .summary-product-name {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 1.1rem; font-weight: 400; color: var(--c-white); margin-bottom: 3px;
+        }
+        .summary-product-sub {
+            font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-grey);
+        }
+        .summary-body { padding: 0 2rem; }
+        .summary-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.9rem 0; border-bottom: 1px solid rgba(174,167,163,0.06);
             font-size: 0.85rem;
-            color: var(--color-text-light);
-            line-height: 1.6;
         }
-        
-        @media (max-width: 968px) {
-            .payment-layout {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .payment-methods {
-                grid-template-columns: 1fr;
-            }
-            
-            .order-summary {
-                position: relative;
-                top: 0;
-            }
+        .summary-row:last-of-type { border-bottom: none; }
+        .s-label { color: var(--c-grey); }
+        .s-value { color: var(--c-mist); }
+        .s-value.green { color: #7ab87a; }
+        .summary-total {
+            display: flex; justify-content: space-between; align-items: baseline;
+            padding: 1.5rem 2rem;
+            border-top: 1px solid rgba(201,169,110,0.2);
+            background: rgba(201,169,110,0.03);
+        }
+        .total-label {
+            font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c-grey);
+        }
+        .total-value {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 2rem; font-weight: 400; color: var(--c-white);
+        }
+        .trust-box {
+            margin: 0 2rem 2rem; padding: 1.2rem 1.5rem;
+            background: rgba(201,169,110,0.04);
+            border: 1px solid rgba(201,169,110,0.1); border-radius: 3px;
+        }
+        .trust-box-title {
+            font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--c-gold); margin-bottom: 8px;
+        }
+        .trust-box p {
+            font-size: 0.78rem; color: var(--c-grey); line-height: 1.7;
+        }
+
+        /* FADE IN */
+        .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.8s var(--ease-silk), transform 0.8s var(--ease-silk); }
+        .fade-in.visible { opacity: 1; transform: none; }
+
+        /* RESPONSIVE */
+        @media (max-width: 960px) {
+            .payment-layout { grid-template-columns: 1fr; }
+            .order-summary { position: relative; top: 0; }
+            .container { padding: 2rem 1.5rem 4rem; }
+            .navbar-inner { padding: 0 1.5rem; }
+            .progress-wrap { padding: 2rem 1.5rem 1rem; }
+        }
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            .payment-methods { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar-content">
-            <a href="index.html" class="logo">FUSTES LA SALLE</a>
-            <div class="secure-badge">
-                🔒 Pagament 100% Segur
-            </div>
+
+<div class="cursor-glow" id="cursor-glow"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="index.html">
+            <img src="https://cdn.shopify.com/s/files/1/0757/5794/4972/files/image__5_-removebg-preview_1_1.png?v=1772468497"
+                 alt="Fustes La Salle" class="logo-img">
+        </a>
+        <div class="secure-badge">🔒 Pagament 100% Segur</div>
+    </div>
+</nav>
+
+<!-- PROGRESS -->
+<div class="progress-wrap fade-in">
+    <div class="progress-bar">
+        <div class="progress-step">
+            <div class="step-circle done">✓</div>
+            <span class="step-label">Cistella</span>
         </div>
-    </nav>
-
-    <div class="container">
-        <!-- Progress Bar -->
-        <div class="progress-bar">
-            <div class="progress-step">
-                <div class="step-circle completed">✓</div>
-                <span class="step-label">Cistella</span>
-            </div>
-            <div class="progress-step">
-                <div class="step-circle active">2</div>
-                <span class="step-label">Pagament</span>
-            </div>
-            <div class="progress-step">
-                <div class="step-circle">3</div>
-                <span class="step-label">Confirmació</span>
-            </div>
+        <div class="progress-step">
+            <div class="step-circle active">2</div>
+            <span class="step-label active">Pagament</span>
         </div>
+        <div class="progress-step">
+            <div class="step-circle">3</div>
+            <span class="step-label">Confirmació</span>
+        </div>
+    </div>
+</div>
 
-        <div class="payment-layout">
-            <!-- Payment Form -->
-            <div class="payment-form-section">
-                <h1 class="section-title">Informació de Pagament</h1>
-                <p class="section-subtitle">Completa les dades per finalitzar la teva compra de forma segura</p>
+<!-- MAIN -->
+<div class="container">
+    <div class="payment-layout">
 
+        <!-- FORM -->
+        <div class="form-panel fade-in">
+            <div class="panel-header">
+                <div class="panel-title">Informació de Pagament</div>
+                <div class="panel-sub">Completa les dades per finalitzar la teva compra de forma segura</div>
+            </div>
+            <div class="panel-body">
                 <form id="paymentForm">
-                    <!-- Payment Method Selection -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">💳 Mètode de Pagament</h3>
+
+                    <!-- METHOD -->
+                    <div class="form-block">
+                        <div class="method-label">Mètode de pagament</div>
                         <div class="payment-methods">
-                            <div class="payment-method active" onclick="selectPaymentMethod(this, 'visa')">
-                                <div class="payment-method-icon">💳</div>
-                                <div class="payment-method-name">Visa</div>
+                            <div class="payment-method active" onclick="selectMethod(this,'visa')">
+                                <div class="method-icon">💳</div>
+                                <div class="method-name">Visa</div>
                             </div>
-                            <div class="payment-method" onclick="selectPaymentMethod(this, 'mastercard')">
-                                <div class="payment-method-icon">💳</div>
-                                <div class="payment-method-name">Mastercard</div>
+                            <div class="payment-method" onclick="selectMethod(this,'mastercard')">
+                                <div class="method-icon">💳</div>
+                                <div class="method-name">Mastercard</div>
                             </div>
-                            <div class="payment-method" onclick="selectPaymentMethod(this, 'amex')">
-                                <div class="payment-method-icon">💳</div>
-                                <div class="payment-method-name">Amex</div>
+                            <div class="payment-method" onclick="selectMethod(this,'amex')">
+                                <div class="method-icon">💳</div>
+                                <div class="method-name">Amex</div>
                             </div>
                         </div>
                         <input type="hidden" id="paymentMethod" value="visa">
                     </div>
 
-                    <!-- Card Details -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">💳 Dades de la Targeta</h3>
-                        
+                    <!-- CARD DETAILS -->
+                    <div class="form-block">
+                        <div class="form-block-title">Dades de la targeta</div>
+
                         <div class="form-group">
-                            <label for="cardNumber">Número de Targeta <span class="required">*</span></label>
-                            <div class="card-input">
+                            <label>Número de Targeta <span class="required">*</span></label>
+                            <div class="card-wrap">
                                 <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required oninput="formatCardNumber(this)">
                                 <div class="card-icons">
-                                    <div class="card-icon visa-icon">VISA</div>
-                                    <div class="card-icon mastercard-icon">MC</div>
-                                    <div class="card-icon amex-icon">AMEX</div>
+                                    <div class="card-icon ci-visa active">VISA</div>
+                                    <div class="card-icon ci-mc">MC</div>
+                                    <div class="card-icon ci-amex">AMEX</div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="cardName">Nom del Titular <span class="required">*</span></label>
-                            <input type="text" id="cardName" placeholder="JOAN GARCÍA MARTÍNEZ" required style="text-transform: uppercase;">
+                            <label>Nom del Titular <span class="required">*</span></label>
+                            <input type="text" id="cardName" placeholder="JOAN GARCÍA MARTÍNEZ" required style="text-transform:uppercase">
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="expiryDate">Data de Caducitat <span class="required">*</span></label>
+                                <label>Caducitat <span class="required">*</span></label>
                                 <input type="text" id="expiryDate" placeholder="MM/AA" maxlength="5" required oninput="formatExpiry(this)">
                             </div>
                             <div class="form-group">
-                                <label for="cvv">CVV <span class="required">*</span></label>
+                                <label>CVV <span class="required">*</span></label>
                                 <input type="text" id="cvv" placeholder="123" maxlength="4" required oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Billing Address -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">📍 Adreça de Facturació</h3>
-                        
+                    <!-- BILLING -->
+                    <div class="form-block">
+                        <div class="form-block-title">Adreça de facturació</div>
+
                         <div class="form-group">
-                            <label for="fullName">Nom Complet <span class="required">*</span></label>
+                            <label>Nom Complet <span class="required">*</span></label>
                             <input type="text" id="fullName" placeholder="Joan García Martínez" required>
                         </div>
-
                         <div class="form-group">
-                            <label for="address">Adreça <span class="required">*</span></label>
+                            <label>Adreça <span class="required">*</span></label>
                             <input type="text" id="address" placeholder="Carrer Major, 123, 1r 2a" required>
                         </div>
-
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="city">Ciutat <span class="required">*</span></label>
+                                <label>Ciutat <span class="required">*</span></label>
                                 <input type="text" id="city" placeholder="La Seu d'Urgell" required>
                             </div>
                             <div class="form-group">
-                                <label for="postalCode">Codi Postal <span class="required">*</span></label>
+                                <label>Codi Postal <span class="required">*</span></label>
                                 <input type="text" id="postalCode" placeholder="25700" maxlength="5" required>
                             </div>
                         </div>
-
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="province">Província <span class="required">*</span></label>
+                                <label>Província <span class="required">*</span></label>
                                 <select id="province" required>
                                     <option value="">Selecciona...</option>
                                     <option value="lleida">Lleida</option>
@@ -604,174 +447,139 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="phone">Telèfon <span class="required">*</span></label>
+                                <label>Telèfon <span class="required">*</span></label>
                                 <input type="tel" id="phone" placeholder="+34 600 000 000" required>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="email">Correu Electrònic <span class="required">*</span></label>
+                            <label>Correu Electrònic <span class="required">*</span></label>
                             <input type="email" id="email" placeholder="exemple@email.com" required>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-pay">
-                        🔒 Realitzar Pagament Segur
+                    <button type="submit" class="btn-pay" id="payBtn">
+                        Realitzar Pagament →
                     </button>
 
-                    <div class="security-badges">
-                        <div class="security-badge">🔒 SSL Segur</div>
-                        <div class="security-badge">✅ Verificat</div>
-                        <div class="security-badge">🛡️ Protegit</div>
+                    <div class="security-row">
+                        <div class="sec-item">🔒 SSL Segur</div>
+                        <div class="sec-item">✓ Verificat</div>
+                        <div class="sec-item">🛡 Protegit</div>
                     </div>
                 </form>
             </div>
+        </div>
 
-            <!-- Order Summary -->
-            <div class="order-summary">
-                <h2 class="summary-title">Resum de la Comanda</h2>
-                
-                <div class="summary-item">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%238B6F47' width='80' height='80'/%3E%3C/svg%3E" alt="Tauleta" class="item-image">
-                    <div class="item-info">
-                        <h4>Tauleta de Nit</h4>
-                        <p>Quantitat: <span id="displayQty">1</span></p>
-                        <p>Preu: 90€/unitat</p>
-                    </div>
-                </div>
-
-                <div class="summary-row">
-                    <span class="summary-label">Subtotal</span>
-                    <span class="summary-value" id="displaySubtotal">90€</span>
-                </div>
-                
-                <div class="summary-row">
-                    <span class="summary-label">Descompte (10%)</span>
-                    <span class="summary-value discount-value" id="displayDiscount">-10€</span>
-                </div>
-                
-                <div class="summary-row">
-                    <span class="summary-label">Enviament</span>
-                    <span class="summary-value" id="displayShipping">20€</span>
-                </div>
-                
-                <div class="summary-row total">
-                    <span class="summary-label">TOTAL</span>
-                    <span class="summary-value" id="displayTotal">110€</span>
-                </div>
-
-                <div class="trust-seal">
-                    <div class="trust-seal-title">🛡️ Compra Segura</div>
-                    <p class="trust-seal-text">
-                        Les teves dades estan protegides amb encriptació SSL de 256 bits. 
-                        No emmagatzemem informació de targetes de crèdit.
-                    </p>
+        <!-- SUMMARY -->
+        <div class="order-summary fade-in">
+            <div class="summary-header">
+                <div class="summary-title">Resum de la Comanda</div>
+            </div>
+            <div class="summary-product">
+                <img src="https://cdn.shopify.com/s/files/1/0757/5794/4972/files/9ff6929a-075b-11f1-ada3-00163e00d5dd.jpg?v=1772469126"
+                     alt="Tauleta de Nit" class="summary-product-img">
+                <div>
+                    <div class="summary-product-name">Tauleta de Nit</div>
+                    <div class="summary-product-sub">Roure Fosc · Artesanal · Qt: <span id="displayQty">1</span></div>
                 </div>
             </div>
+            <div class="summary-body">
+                <div class="summary-row">
+                    <span class="s-label">Subtotal</span>
+                    <span class="s-value" id="displaySubtotal">90€</span>
+                </div>
+                <div class="summary-row">
+                    <span class="s-label">Descompte (10%)</span>
+                    <span class="s-value green" id="displayDiscount">−10€</span>
+                </div>
+                <div class="summary-row">
+                    <span class="s-label">Enviament</span>
+                    <span class="s-value" id="displayShipping">—</span>
+                </div>
+            </div>
+            <div class="summary-total">
+                <span class="total-label">Total</span>
+                <span class="total-value" id="displayTotal">—</span>
+            </div>
+            <div class="trust-box">
+                <div class="trust-box-title">Compra Segura</div>
+                <p>Les teves dades estan protegides amb encriptació SSL de 256 bits. No emmagatzemem informació de targetes.</p>
+            </div>
         </div>
-    </div>
 
-    <script>
-        // Get data from URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const quantity = parseInt(urlParams.get('qty')) || 1;
-        const shippingCost = parseFloat(urlParams.get('shipping')) || 20;
-        const province = urlParams.get('province') || '';
-        
-        // Update display
-        document.getElementById('displayQty').textContent = quantity;
-        const subtotal = 90 * quantity;
-        const discount = 10 * quantity;
-        const total = subtotal + shippingCost;
-        
-        document.getElementById('displaySubtotal').textContent = subtotal + '€';
-        document.getElementById('displayDiscount').textContent = '-' + discount + '€';
-        document.getElementById('displayShipping').textContent = shippingCost + '€';
-        document.getElementById('displayTotal').textContent = total + '€';
-        
-        // Select payment method
-        function selectPaymentMethod(element, method) {
-            document.querySelectorAll('.payment-method').forEach(el => {
-                el.classList.remove('active');
-            });
-            element.classList.add('active');
-            document.getElementById('paymentMethod').value = method;
-            
-            // Update card icons
-            const icons = document.querySelectorAll('.card-icon');
-            icons.forEach(icon => icon.classList.remove('active'));
-            
-            if (method === 'visa') {
-                document.querySelector('.visa-icon').classList.add('active');
-            } else if (method === 'mastercard') {
-                document.querySelector('.mastercard-icon').classList.add('active');
-            } else if (method === 'amex') {
-                document.querySelector('.amex-icon').classList.add('active');
-            }
-        }
-        
-        // Format card number
-        function formatCardNumber(input) {
-            let value = input.value.replace(/\s/g, '');
-            value = value.replace(/[^0-9]/g, '');
-            
-            let formatted = '';
-            for (let i = 0; i < value.length; i++) {
-                if (i > 0 && i % 4 === 0) {
-                    formatted += ' ';
-                }
-                formatted += value[i];
-            }
-            input.value = formatted;
-        }
-        
-        // Format expiry date
-        function formatExpiry(input) {
-            let value = input.value.replace(/\//g, '');
-            value = value.replace(/[^0-9]/g, '');
-            
-            if (value.length >= 2) {
-                value = value.substring(0, 2) + '/' + value.substring(2, 4);
-            }
-            input.value = value;
-        }
-        
-        // Handle form submission
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const cardNumber = document.getElementById('cardNumber').value;
-            const cardName = document.getElementById('cardName').value;
-            const expiryDate = document.getElementById('expiryDate').value;
-            const cvv = document.getElementById('cvv').value;
-            const fullName = document.getElementById('fullName').value;
-            const address = document.getElementById('address').value;
-            const city = document.getElementById('city').value;
-            const postalCode = document.getElementById('postalCode').value;
-            const province = document.getElementById('province').value;
-            const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
-            
-            // Validate
-            if (!cardNumber || !cardName || !expiryDate || !cvv || !fullName || !address || !city || !postalCode || !province || !phone || !email) {
-                alert('❗ Si us plau, omple tots els camps obligatoris.');
+    </div>
+</div>
+
+<script>
+    // CURSOR GLOW
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top  = e.clientY + 'px';
+    });
+
+    // FADE IN
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // URL PARAMS
+    const urlParams = new URLSearchParams(window.location.search);
+    const quantity = parseInt(urlParams.get('qty')) || 1;
+    const shippingCost = parseFloat(urlParams.get('shipping')) || 0;
+    const subtotal = 90 * quantity;
+    const discount = 10 * quantity;
+    const total = subtotal + shippingCost;
+
+    document.getElementById('displayQty').textContent = quantity;
+    document.getElementById('displaySubtotal').textContent = subtotal + '€';
+    document.getElementById('displayDiscount').textContent = '−' + discount + '€';
+    document.getElementById('displayShipping').textContent = shippingCost ? shippingCost + '€' : '—';
+    document.getElementById('displayTotal').textContent = total + '€';
+
+    // METHOD SELECT
+    function selectMethod(el, method) {
+        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+        el.classList.add('active');
+        document.getElementById('paymentMethod').value = method;
+        document.querySelectorAll('.card-icon').forEach(i => i.classList.remove('active'));
+        const map = { visa: '.ci-visa', mastercard: '.ci-mc', amex: '.ci-amex' };
+        document.querySelector(map[method]).classList.add('active');
+    }
+
+    // FORMAT
+    function formatCardNumber(input) {
+        let v = input.value.replace(/\D/g,'');
+        let f = '';
+        for (let i=0; i<v.length; i++) { if (i>0&&i%4===0) f+=' '; f+=v[i]; }
+        input.value = f;
+    }
+    function formatExpiry(input) {
+        let v = input.value.replace(/\D/g,'');
+        if (v.length >= 2) v = v.substring(0,2) + '/' + v.substring(2,4);
+        input.value = v;
+    }
+
+    // SUBMIT
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const fields = ['cardNumber','cardName','expiryDate','cvv','fullName','address','city','postalCode','province','phone','email'];
+        for (const f of fields) {
+            if (!document.getElementById(f).value) {
+                alert('Si us plau, omple tots els camps obligatoris.');
                 return;
             }
-            
-            // Simulate payment processing
-            const btn = document.querySelector('.btn-pay');
-            btn.textContent = '⏳ Processant pagament...';
-            btn.disabled = true;
-            
-            setTimeout(() => {
-                // Redirect to confirmation page
-                window.location.href = `confirmacion-pago.html?total=${total}&qty=${quantity}`;
-            }, 2000);
-        });
-        
-        // Initialize
-        selectPaymentMethod(document.querySelector('.payment-method.active'), 'visa');
-    </script>
+        }
+        const btn = document.getElementById('payBtn');
+        btn.textContent = 'Processant pagament...';
+        btn.disabled = true;
+        setTimeout(() => {
+            window.location.href = `confirmacion-pago.html?total=${total}&qty=${quantity}`;
+        }, 2000);
+    });
+
+    selectMethod(document.querySelector('.payment-method.active'), 'visa');
+</script>
 </body>
 </html>
