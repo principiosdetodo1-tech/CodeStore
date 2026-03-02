@@ -3,1077 +3,630 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tauleta de Nit - Elegància Natural</title>
+    <title>Tauleta de Nit — Fustes La Salle</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* COLORS - Edita aquests valors per canviar els colors */
-            --color-primary: #1a1a1a;
-            --color-secondary: #8B6F47;
-            --color-accent: #D4AF37;
-            --color-bg-light: #FAF8F5;
-            --color-bg-cream: #F5EFE7;
-            --color-text-dark: #1a1a1a;
-            --color-text-light: #666;
-            --color-white: #ffffff;
-            --color-success: #2D5016;
-            --color-discount: #C41E3A;
-            
-            /* TIPOGRAFIA */
-            --font-display: 'Playfair Display', serif;
-            --font-body: 'Outfit', sans-serif;
-            
-            /* MIDES - Edita per canviar espaiats */
-            --spacing-xs: 0.5rem;
-            --spacing-sm: 1rem;
-            --spacing-md: 2rem;
-            --spacing-lg: 4rem;
-            --spacing-xl: 6rem;
+            --c-dark:     #1a1918;
+            --c-darker:   #242323;
+            --c-mid:      #363636;
+            --c-grey:     #525254;
+            --c-light:    #959595;
+            --c-mist:     #AEA7A3;
+            --c-warm:     #795238;
+            --c-gold:     #C9A96E;
+            --c-gold-lt:  #E8D5A3;
+            --c-cream:    #F5F0EB;
+            --c-white:    #FAFAFA;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans:  'Inter', sans-serif;
+            --ease-silk: cubic-bezier(0.23, 1, 0.32, 1);
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: var(--font-body);
-            color: var(--color-text-dark);
-            background: var(--color-bg-light);
+            font-family: var(--font-sans);
+            background: var(--c-dark);
+            color: var(--c-mist);
             line-height: 1.6;
             overflow-x: hidden;
         }
-        
-        /* ANIMACIONS */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--c-darker); }
+        ::-webkit-scrollbar-thumb { background: var(--c-gold); border-radius: 2px; }
+
+        .cursor-glow {
+            position: fixed;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,169,110,0.07) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
         }
-        
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-        
-        /* NAVEGACIÓ */
-        .navbar {
-            background: var(--color-white);
-            padding: 1.5rem 2rem;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            animation: fadeInUp 0.6s ease;
-        }
-        
-        .navbar-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            letter-spacing: -1px;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-        
-        .nav-links a {
-            color: var(--color-text-dark);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
-        
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--color-accent);
-            transition: width 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: var(--color-secondary);
-        }
-        
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-        
-        /* BANNER DESCOMPTE */
-        .discount-banner {
-            background: linear-gradient(135deg, var(--color-discount) 0%, #8B0000 100%);
-            color: var(--color-white);
-            padding: 1rem;
+
+        /* ANNOUNCE */
+        .announce {
+            background: var(--c-gold);
+            color: var(--c-dark);
             text-align: center;
-            font-weight: 600;
-            animation: slideInLeft 0.8s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .discount-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%); }
-            100% { transform: translateX(100%) translateY(100%); }
-        }
-        
-        .discount-banner span {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .discount-text {
-            font-size: 1.1rem;
-        }
-        
-        .countdown {
-            font-size: 0.9rem;
-            opacity: 0.95;
-            margin-top: 0.3rem;
-        }
-        
-        /* HERO SECTION */
-        .hero {
-            max-width: 1400px;
-            margin: 4rem auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            animation: fadeInUp 0.8s ease 0.2s both;
-        }
-        
-        .product-gallery {
-            position: relative;
-        }
-        
-        .main-image {
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            animation: scaleIn 1s ease 0.4s both;
-            transition: transform 0.4s;
-        }
-        
-        .main-image:hover {
-            transform: scale(1.02);
-        }
-        
-        .quality-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--color-accent);
-            color: var(--color-primary);
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
-            animation: pulse 2s infinite;
-        }
-        
-        .product-info {
-            animation: fadeInUp 1s ease 0.6s both;
-        }
-        
-        .product-title {
-            font-family: var(--font-display);
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 1rem;
-            line-height: 1.1;
-        }
-        
-        .product-subtitle {
-            font-size: 1.3rem;
-            color: var(--color-text-light);
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-        
-        .rating {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stars {
-            color: var(--color-accent);
-            font-size: 1.3rem;
-            letter-spacing: 3px;
-        }
-        
-        .reviews {
-            color: var(--color-text-light);
-            font-size: 0.95rem;
-        }
-        
-        .price-section {
-            background: var(--color-bg-cream);
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            border-left: 5px solid var(--color-accent);
-        }
-        
-        .price-label {
-            font-size: 0.9rem;
-            color: var(--color-text-light);
+            padding: 10px 20px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
         }
-        
-        .price {
-            display: flex;
-            align-items: baseline;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
+        .announce strong { font-weight: 600; }
+
+        /* NAVBAR */
+        .navbar {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(26,25,24,0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(201,169,110,0.12);
         }
-        
-        .current-price {
-            font-family: var(--font-display);
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: var(--color-primary);
+        .navbar-inner {
+            max-width: 1440px; margin: 0 auto;
+            padding: 0 3rem; height: 72px;
+            display: flex; align-items: center; justify-content: space-between;
         }
-        
-        .original-price {
-            font-size: 1.5rem;
-            color: var(--color-text-light);
-            text-decoration: line-through;
+        .logo-img { height: 44px; width: auto; }
+        .nav-links { display: flex; gap: 3rem; list-style: none; }
+        .nav-links a {
+            color: var(--c-mist); text-decoration: none;
+            font-size: 0.75rem; letter-spacing: 0.12em;
+            text-transform: uppercase; font-weight: 400;
+            position: relative; transition: color 0.3s;
         }
-        
-        .discount-tag {
-            background: var(--color-discount);
-            color: var(--color-white);
-            padding: 0.4rem 1rem;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.95rem;
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 1px; background: var(--c-gold);
+            transition: width 0.4s var(--ease-silk);
         }
-        
-        .savings {
-            color: var(--color-success);
-            font-weight: 600;
-            font-size: 1.1rem;
+        .nav-links a:hover { color: var(--c-gold-lt); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            font-size: 0.72rem; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--c-dark);
+            background: var(--c-gold); padding: 10px 24px;
+            border-radius: 2px; text-decoration: none;
+            font-weight: 500; transition: all 0.3s;
         }
-        
-        .payment-options {
-            font-size: 0.9rem;
-            color: var(--color-text-light);
-            margin-top: 1rem;
+        .nav-cta:hover { background: var(--c-gold-lt); }
+
+        /* HERO */
+        .hero {
+            max-width: 1440px; margin: 0 auto;
+            padding: 6rem 3rem;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 6rem; align-items: center;
+            min-height: calc(100vh - 120px);
         }
-        
-        .payment-options strong {
-            color: var(--color-primary);
+        .gallery-wrap { position: relative; }
+        .gallery-backdrop {
+            position: absolute; inset: -30px;
+            background: radial-gradient(ellipse at 60% 40%, rgba(121,82,56,0.18) 0%, transparent 65%);
+            pointer-events: none;
         }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+        .main-image-wrap { position: relative; border-radius: 4px; overflow: hidden; }
+        .main-image-wrap::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(201,169,110,0.08) 0%, transparent 50%);
+            z-index: 1; pointer-events: none;
         }
-        
+        .main-image {
+            width: 100%; display: block; border-radius: 4px;
+            transition: transform 0.8s var(--ease-silk);
+        }
+        .main-image-wrap:hover .main-image { transform: scale(1.03); }
+        .badge-corner {
+            position: absolute; top: 24px; left: 24px;
+            z-index: 2; display: flex; flex-direction: column; gap: 8px;
+        }
+        .badge { display: inline-block; padding: 6px 14px; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; }
+        .badge-gold { background: var(--c-gold); color: var(--c-dark); }
+        .badge-dark { background: rgba(26,25,24,0.88); color: var(--c-mist); border: 1px solid rgba(201,169,110,0.25); }
+        .thumbs { display: flex; gap: 12px; margin-top: 16px; }
+        .thumb {
+            flex: 1; border-radius: 3px; overflow: hidden;
+            cursor: pointer; border: 1px solid transparent;
+            opacity: 0.6; transition: opacity 0.3s, border-color 0.3s;
+        }
+        .thumb.active, .thumb:hover { border-color: var(--c-gold); opacity: 1; }
+        .thumb img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+
+        /* PRODUCT INFO */
+        .product-info { display: flex; flex-direction: column; gap: 0; }
+        .eyebrow {
+            font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+            color: var(--c-gold); margin-bottom: 1.2rem;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--c-gold); }
+        .product-title {
+            font-family: var(--font-serif); font-size: 4.2rem; font-weight: 300;
+            color: var(--c-white); line-height: 1.0; letter-spacing: -0.01em; margin-bottom: 1rem;
+        }
+        .product-title em { font-style: italic; color: var(--c-gold-lt); }
+        .product-subtitle { font-size: 0.85rem; color: var(--c-light); font-weight: 300; letter-spacing: 0.03em; margin-bottom: 2rem; line-height: 1.7; }
+        .rating-row {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 2.5rem; padding-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(174,167,163,0.12);
+        }
+        .stars { color: var(--c-gold); font-size: 0.85rem; letter-spacing: 2px; }
+        .rating-text { font-size: 0.75rem; color: var(--c-light); letter-spacing: 0.04em; }
+        .rating-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--c-grey); }
+
+        /* PRICE */
+        .price-block { margin-bottom: 2.5rem; }
+        .price-row { display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px; }
+        .price-current { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 300; color: var(--c-white); line-height: 1; }
+        .price-original { font-size: 1.1rem; color: var(--c-grey); text-decoration: line-through; font-weight: 300; }
+        .price-save {
+            font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+            background: rgba(201,169,110,0.12); color: var(--c-gold);
+            border: 1px solid rgba(201,169,110,0.3); padding: 5px 12px; border-radius: 2px;
+        }
+        .price-note { font-size: 0.75rem; color: var(--c-grey); letter-spacing: 0.03em; }
+        .price-note span { color: var(--c-light); }
+
+        /* BUTTONS */
+        .cta-group { display: flex; gap: 12px; margin-bottom: 2.5rem; }
         .btn {
-            padding: 1.2rem 2.5rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: var(--font-body);
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            font-family: var(--font-sans); font-size: 0.72rem; font-weight: 500;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            padding: 16px 32px; border: none; cursor: pointer;
+            transition: all 0.35s var(--ease-silk); text-decoration: none;
+            display: inline-flex; align-items: center; gap: 10px;
+            border-radius: 2px; white-space: nowrap;
         }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-            color: var(--color-white);
-            flex: 2;
-            box-shadow: 0 10px 30px rgba(44, 24, 16, 0.3);
+        .btn-primary { background: var(--c-gold); color: var(--c-dark); flex: 2; justify-content: center; }
+        .btn-primary:hover { background: var(--c-gold-lt); transform: translateY(-1px); box-shadow: 0 8px 32px rgba(201,169,110,0.25); }
+        .btn-ghost { background: transparent; color: var(--c-mist); border: 1px solid rgba(174,167,163,0.3); flex: 1; justify-content: center; }
+        .btn-ghost:hover { border-color: var(--c-gold); color: var(--c-gold-lt); }
+
+        /* FEATURES */
+        .feature-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 2.5rem; }
+        .feature-pill {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 16px; background: rgba(36,35,35,0.8);
+            border: 1px solid rgba(174,167,163,0.08); border-radius: 3px;
+            font-size: 0.75rem; color: var(--c-mist); letter-spacing: 0.04em;
+            transition: border-color 0.3s, background 0.3s;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(44, 24, 16, 0.4);
+        .feature-pill:hover { border-color: rgba(201,169,110,0.2); background: rgba(201,169,110,0.05); }
+        .feature-pill-icon { font-size: 1rem; opacity: 0.85; }
+        .trust-bar {
+            display: flex; gap: 24px; padding: 16px 20px;
+            background: rgba(36,35,35,0.5); border: 1px solid rgba(174,167,163,0.08); border-radius: 3px;
         }
-        
-        .btn-secondary {
-            background: var(--color-white);
-            color: var(--color-primary);
-            border: 2px solid var(--color-primary);
-            flex: 1;
+        .trust-item { display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: var(--c-light); letter-spacing: 0.06em; text-transform: uppercase; }
+        .trust-check {
+            width: 16px; height: 16px; border: 1px solid var(--c-gold); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.55rem; color: var(--c-gold); flex-shrink: 0;
         }
-        
-        .btn-secondary:hover {
-            background: var(--color-primary);
-            color: var(--color-white);
+
+        /* URGENCY */
+        .urgency { max-width: 1440px; margin: 0 auto; padding: 3rem; }
+        .urgency-inner {
+            background: rgba(36,35,35,0.6); border: 1px solid rgba(201,169,110,0.15);
+            border-radius: 4px; padding: 2.5rem 3rem;
+            display: flex; align-items: center; justify-content: space-between; gap: 2rem;
         }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
+        .urgency-left { display: flex; flex-direction: column; gap: 6px; }
+        .urgency-title { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400; color: var(--c-white); }
+        .urgency-sub { font-size: 0.78rem; color: var(--c-light); letter-spacing: 0.04em; }
+        .urgency-right { display: flex; gap: 24px; flex-shrink: 0; }
+        .urgency-badge { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .urgency-num { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 300; color: var(--c-gold); line-height: 1; }
+        .urgency-label { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-grey); }
+        .urgency-sep { font-family: var(--font-serif); font-size: 2rem; color: var(--c-grey); align-self: center; }
+        .stock-bar-wrap { margin-top: 8px; }
+        .stock-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-grey); margin-bottom: 6px; }
+        .stock-bar { width: 200px; height: 3px; background: rgba(174,167,163,0.1); border-radius: 2px; overflow: hidden; }
+        .stock-fill { height: 100%; width: 24%; background: linear-gradient(90deg, var(--c-warm), var(--c-gold)); border-radius: 2px; }
+
+        /* SPECS */
+        .specs-section { max-width: 1440px; margin: 0 auto; padding: 6rem 3rem; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-eyebrow {
+            font-size: 0.65rem; letter-spacing: 0.24em; text-transform: uppercase;
+            color: var(--c-gold); margin-bottom: 1rem;
+            display: flex; align-items: center; justify-content: center; gap: 16px;
         }
-        
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 1rem;
-            background: var(--color-white);
-            border-radius: 10px;
-            transition: transform 0.3s;
+        .section-eyebrow::before, .section-eyebrow::after {
+            content: ''; display: block; width: 40px; height: 1px; background: rgba(201,169,110,0.4);
         }
-        
-        .feature-item:hover {
-            transform: translateX(5px);
-        }
-        
-        .feature-icon {
-            font-size: 1.5rem;
-        }
-        
-        .feature-text {
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-        
-        .trust-badges {
-            display: flex;
-            gap: 2rem;
-            padding: 1.5rem;
-            background: var(--color-bg-cream);
-            border-radius: 10px;
-        }
-        
-        .trust-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--color-text-light);
-        }
-        
-        .trust-icon {
-            color: var(--color-success);
-            font-size: 1.2rem;
-        }
-        
-        /* ESPECIFICACIONS */
-        .specifications {
-            max-width: 1400px;
-            margin: 6rem auto;
-            padding: 0 2rem;
-        }
-        
-        .section-title {
-            font-family: var(--font-display);
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
+        .section-title { font-family: var(--font-serif); font-size: 2.8rem; font-weight: 300; color: var(--c-white); }
         .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 1px; background: rgba(174,167,163,0.08);
+            border: 1px solid rgba(174,167,163,0.08); border-radius: 4px; overflow: hidden;
         }
-        
-        .spec-card {
-            background: var(--color-white);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .spec-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
-        }
-        
-        .spec-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .spec-title {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--color-primary);
-            margin-bottom: 1rem;
-        }
-        
-        .spec-description {
-            color: var(--color-text-light);
-            line-height: 1.8;
-        }
-        
-        /* GALERIA TÈCNICA */
-        .technical-gallery {
-            max-width: 1400px;
-            margin: 6rem auto;
-            padding: 0 2rem;
-            background: var(--color-bg-cream);
-            padding: 4rem 2rem;
-            border-radius: 30px;
-        }
-        
-        .gallery-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-        
-        .technical-image {
-            width: 100%;
-            border-radius: 15px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
-        }
-        
-        .dimensions-list {
-            list-style: none;
-        }
-        
-        .dimension-item {
-            padding: 1.2rem;
-            background: var(--color-white);
-            margin-bottom: 1rem;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.3s;
-        }
-        
-        .dimension-item:hover {
-            transform: translateX(10px);
-        }
-        
-        .dimension-label {
-            font-weight: 600;
-            color: var(--color-primary);
-        }
-        
-        .dimension-value {
-            font-size: 1.2rem;
-            color: var(--color-secondary);
-            font-weight: 700;
-        }
-        
-        /* BENEFICIS */
-        .benefits {
-            max-width: 1400px;
-            margin: 6rem auto;
-            padding: 0 2rem;
-        }
-        
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-        
-        .benefit-card {
-            text-align: center;
-            padding: 3rem 2rem;
-            background: var(--color-white);
-            border-radius: 20px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .benefit-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 0;
-            background: linear-gradient(135deg, var(--color-bg-cream) 0%, var(--color-bg-light) 100%);
-            transition: height 0.3s;
-            z-index: 0;
-        }
-        
-        .benefit-card:hover::before {
-            height: 100%;
-        }
-        
-        .benefit-card > * {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .benefit-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-        }
-        
-        .benefit-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .benefit-title {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--color-primary);
-            margin-bottom: 1rem;
-        }
-        
-        .benefit-text {
-            color: var(--color-text-light);
-            line-height: 1.8;
-        }
-        
-        /* URGÈNCIA */
-        .urgency-section {
-            max-width: 1400px;
-            margin: 4rem auto;
-            padding: 3rem 2rem;
-            background: linear-gradient(135deg, #FFF4E6 0%, #FFE8CC 100%);
-            border-radius: 20px;
-            text-align: center;
-            border: 2px dashed var(--color-accent);
-        }
-        
-        .urgency-title {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            color: var(--color-primary);
-            margin-bottom: 1rem;
-        }
-        
-        .stock-warning {
-            color: var(--color-discount);
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .recent-buyers {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-        
-        .buyer-badge {
-            background: var(--color-white);
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
+        .spec-card { background: var(--c-darker); padding: 2.5rem 2rem; transition: background 0.4s; }
+        .spec-card:hover { background: rgba(50,48,46,0.95); }
+        .spec-icon { font-size: 1.5rem; margin-bottom: 1.2rem; opacity: 0.75; }
+        .spec-title { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 400; color: var(--c-white); margin-bottom: 1rem; }
+        .spec-body { font-size: 0.8rem; color: var(--c-light); line-height: 1.9; font-weight: 300; }
+        .spec-body strong { color: var(--c-mist); font-weight: 400; }
+
+        /* TECH GALLERY */
+        .tech-gallery { background: rgba(22,21,20,0.9); border-top: 1px solid rgba(174,167,163,0.08); border-bottom: 1px solid rgba(174,167,163,0.08); }
+        .tech-gallery-inner { max-width: 1440px; margin: 0 auto; padding: 6rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+        .tech-image-wrap { position: relative; border-radius: 4px; overflow: hidden; }
+        .tech-image-wrap::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,169,110,0.06) 0%, transparent 60%); pointer-events: none; }
+        .tech-image { width: 100%; display: block; border-radius: 4px; }
+        .dims-header { font-family: var(--font-serif); font-size: 2rem; font-weight: 300; color: var(--c-white); margin-bottom: 2.5rem; }
+        .dims-list { list-style: none; }
+        .dim-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(174,167,163,0.08); transition: padding 0.3s; }
+        .dim-row:hover { padding-left: 8px; }
+        .dim-label { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-grey); font-weight: 300; }
+        .dim-val { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 300; color: var(--c-gold); }
+
+        /* BENEFITS */
+        .benefits-section { max-width: 1440px; margin: 0 auto; padding: 6rem 3rem; }
+        .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(174,167,163,0.06); border: 1px solid rgba(174,167,163,0.06); border-radius: 4px; overflow: hidden; }
+        .benefit-card { background: var(--c-dark); padding: 3rem 2rem; text-align: center; position: relative; overflow: hidden; transition: background 0.4s; }
+        .benefit-card::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--c-gold), transparent); transform: scaleX(0); transition: transform 0.5s var(--ease-silk); }
+        .benefit-card:hover::before { transform: scaleX(1); }
+        .benefit-card:hover { background: rgba(36,35,35,0.8); }
+        .benefit-icon { font-size: 2rem; margin-bottom: 1.5rem; opacity: 0.7; }
+        .benefit-title { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 400; color: var(--c-white); margin-bottom: 1rem; }
+        .benefit-text { font-size: 0.78rem; color: var(--c-light); line-height: 1.9; font-weight: 300; }
+
         /* FOOTER */
-        .footer {
-            background: var(--color-primary);
-            color: var(--color-white);
-            padding: 4rem 2rem 2rem;
-            margin-top: 6rem;
-        }
-        
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-        
-        .footer-section h3 {
-            font-family: var(--font-display);
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .footer-section ul {
-            list-style: none;
-        }
-        
-        .footer-section ul li {
-            margin-bottom: 0.8rem;
-        }
-        
-        .footer-section a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-section a:hover {
-            color: var(--color-accent);
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.6);
-        }
-        
+        footer { background: #111110; border-top: 1px solid rgba(174,167,163,0.08); }
+        .footer-inner { max-width: 1440px; margin: 0 auto; padding: 5rem 3rem 3rem; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 3rem; }
+        .footer-brand .footer-logo { height: 36px; width: auto; margin-bottom: 1.5rem; filter: brightness(0.85); }
+        .footer-brand p { font-size: 0.78rem; color: var(--c-grey); line-height: 1.9; max-width: 260px; font-weight: 300; }
+        .footer-col h4 { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c-gold); margin-bottom: 1.5rem; font-weight: 500; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 10px; }
+        .footer-col a { font-size: 0.78rem; color: var(--c-grey); text-decoration: none; font-weight: 300; transition: color 0.3s; }
+        .footer-col a:hover { color: var(--c-mist); }
+        .footer-bottom { max-width: 1440px; margin: 0 auto; padding: 1.5rem 3rem 2.5rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(174,167,163,0.06); }
+        .footer-bottom p { font-size: 0.68rem; color: rgba(174,167,163,0.35); letter-spacing: 0.05em; }
+
+        /* FADE IN */
+        .fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.8s var(--ease-silk), transform 0.8s var(--ease-silk); }
+        .fade-in.visible { opacity: 1; transform: none; }
+
         /* RESPONSIVE */
-        @media (max-width: 968px) {
-            .hero {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .gallery-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .benefits-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .product-title {
-                font-size: 2.5rem;
-            }
-            
-            .current-price {
-                font-size: 2.5rem;
-            }
-            
-            .nav-links {
-                display: none;
-            }
+        @media (max-width: 1100px) {
+            .hero { grid-template-columns: 1fr; gap: 3rem; min-height: auto; }
+            .tech-gallery-inner { grid-template-columns: 1fr; }
+            .benefits-grid, .specs-grid { grid-template-columns: repeat(2,1fr); }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
         }
-        
-        @media (max-width: 576px) {
-            .cta-buttons {
-                flex-direction: column;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .trust-badges {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 768px) {
+            .hero { padding: 3rem 1.5rem; }
+            .product-title { font-size: 2.8rem; }
+            .nav-links { display: none; }
+            .specs-grid, .benefits-grid { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr; }
+            .urgency-inner { flex-direction: column; }
+            .navbar-inner { padding: 0 1.5rem; }
+            .trust-bar { flex-direction: column; gap: 10px; }
+            .cta-group { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-    <!-- BANNER DESCOMPTE - EDITA EL TEXT AQUÍ -->
-    <div class="discount-banner">
-        <div class="discount-text">
-            ⚡ <strong>OFERTA PRIMERA COMPRA:</strong> 10% de descompte en el teu primer pedido! 
-            <span class="countdown">⏰ Oferta acaba en: <strong id="countdown-timer">23:59:45</strong></span>
+
+<div class="cursor-glow" id="cursor-glow"></div>
+
+<!-- ANNOUNCE -->
+<div class="announce">
+    <strong>Oferta de benvinguda</strong> — 10% de descompte en la teva primera comanda · Codi: <strong>SALLE10</strong>
+    &nbsp;·&nbsp; Lliurament disponible a tota Espanya
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <img src="image__5_-removebg-preview__1___1_.png" alt="Fustes La Salle" class="logo-img">
+        <ul class="nav-links">
+            <li><a href="#producte">Producte</a></li>
+            <li><a href="#especificacions">Especificacions</a></li>
+            <li><a href="#beneficis">Beneficis</a></li>
+            <li><a href="#contacte">Contacte</a></li>
+        </ul>
+        <a href="carrito.html" class="nav-cta">Cistella</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="producte">
+    <div class="gallery-wrap fade-in">
+        <div class="gallery-backdrop"></div>
+        <div class="main-image-wrap">
+            <div class="badge-corner">
+                <span class="badge badge-gold">100% Natural</span>
+                <span class="badge badge-dark">Artesanal</span>
+            </div>
+            <img src="https://image2url.com/r2/default/images/1770842774855-5fe5f772-1799-4c91-a6ad-cf9c4bf67f13.jpg"
+                 alt="Tauleta de Nit" class="main-image" id="main-product-image">
+        </div>
+        <div class="thumbs">
+            <div class="thumb active">
+                <img src="https://image2url.com/r2/default/images/1770842774855-5fe5f772-1799-4c91-a6ad-cf9c4bf67f13.jpg" alt="">
+            </div>
+            <div class="thumb">
+                <img src="https://i.imgur.com/dpPDWtl.jpg" alt="">
+            </div>
+            <div class="thumb">
+                <img src="https://image2url.com/r2/default/images/1770842774855-5fe5f772-1799-4c91-a6ad-cf9c4bf67f13.jpg" alt="">
+            </div>
         </div>
     </div>
 
-    <!-- NAVEGACIÓ -->
-    <nav class="navbar">
-        <div class="navbar-content">
-            <div class="logo">FUSTES LA SALLE</div>
-            <ul class="nav-links">
-                <li><a href="#producte">Producte</a></li>
-                <li><a href="#especificacions">Especificacions</a></li>
-                <li><a href="#beneficis">Beneficis</a></li>
-                <li><a href="#contacte">Contacte</a></li>
+    <div class="product-info fade-in">
+        <div class="eyebrow">Col·lecció Roure Fosc</div>
+        <h1 class="product-title">Tauleta<br><em>de Nit</em></h1>
+        <p class="product-subtitle">Roure natural treballat artesanalment. Acabats en fusta fosca amb relleu esculpit a mà, tiradors de llautó envellit. Una peça de caràcter per a dormitoris amb personalitat.</p>
+
+        <div class="rating-row">
+            <span class="stars">★★★★★</span>
+            <div class="rating-dot"></div>
+            <span class="rating-text">847 valoracions</span>
+            <div class="rating-dot"></div>
+            <span class="rating-text">1.243 venudes</span>
+        </div>
+
+        <div class="price-block">
+            <div class="price-row">
+                <span class="price-current">90€</span>
+                <span class="price-original">100€</span>
+                <span class="price-save">−10%</span>
+            </div>
+            <div class="price-note">
+                <span>Pagament fraccionat:</span> 3 × 30€ sense interessos
+                &nbsp;·&nbsp; Enviament calculat en la compra
+            </div>
+        </div>
+
+        <div class="cta-group">
+            <a href="carrito.html" class="btn btn-primary">Afegir a la cistella →</a>
+            <a href="contacto.html" class="btn btn-ghost">Consultar</a>
+        </div>
+
+        <div class="feature-list">
+            <div class="feature-pill"><span class="feature-pill-icon">🌳</span>Roure 100% natural</div>
+            <div class="feature-pill"><span class="feature-pill-icon">🔧</span>Muntatge inclòs</div>
+            <div class="feature-pill"><span class="feature-pill-icon">🚚</span>Enviament a Espanya</div>
+            <div class="feature-pill"><span class="feature-pill-icon">↩️</span>Devolució 30 dies</div>
+        </div>
+
+        <div class="trust-bar">
+            <div class="trust-item"><div class="trust-check">✓</div>Garantia 1 any</div>
+            <div class="trust-item"><div class="trust-check">✓</div>Pagament segur</div>
+            <div class="trust-item"><div class="trust-check">✓</div>Sostenible</div>
+        </div>
+    </div>
+</section>
+
+<!-- URGENCY -->
+<section class="urgency fade-in">
+    <div class="urgency-inner">
+        <div class="urgency-left">
+            <div class="section-eyebrow" style="justify-content:flex-start">Estoc limitat</div>
+            <div class="urgency-title">Últimes unitats disponibles</div>
+            <div class="urgency-sub">Més de 50 persones estan veient aquest producte ara mateix</div>
+            <div class="stock-bar-wrap">
+                <div class="stock-label">Estoc restant — 12 unitats</div>
+                <div class="stock-bar"><div class="stock-fill"></div></div>
+            </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:20px;">
+            <div class="urgency-right">
+                <div class="urgency-badge">
+                    <span class="urgency-num" id="h">23</span>
+                    <span class="urgency-label">Hores</span>
+                </div>
+                <span class="urgency-sep">:</span>
+                <div class="urgency-badge">
+                    <span class="urgency-num" id="m">59</span>
+                    <span class="urgency-label">Min</span>
+                </div>
+                <span class="urgency-sep">:</span>
+                <div class="urgency-badge">
+                    <span class="urgency-num" id="s">45</span>
+                    <span class="urgency-label">Seg</span>
+                </div>
+            </div>
+            <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--c-grey)">
+                🟢 Maria (BCN) · Josep (GI) · Laura (LLE) han comprat avui
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SPECS -->
+<section class="specs-section fade-in" id="especificacions">
+    <div class="section-header">
+        <div class="section-eyebrow">Especificacions</div>
+        <h2 class="section-title">Fabricat amb precisió</h2>
+    </div>
+    <div class="specs-grid">
+        <div class="spec-card">
+            <div class="spec-icon">📐</div>
+            <h3 class="spec-title">Dimensions</h3>
+            <p class="spec-body"><strong>Alçada:</strong> 48 cm<br><strong>Amplada:</strong> 45 cm<br><strong>Profunditat:</strong> 40 cm<br><strong>Pes:</strong> 18 kg</p>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon">🪵</div>
+            <h3 class="spec-title">Materials</h3>
+            <p class="spec-body">Roure natural amb acabat fosc i relleu artesanal. Tiradors metàl·lics en llautó envellit.</p>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon">📦</div>
+            <h3 class="spec-title">Capacitat</h3>
+            <p class="spec-body">2 calaixos amb guies metàl·liques<br>Sistema soft-close silenciós<br>5 kg per calaix · 20 kg tapa</p>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon">♻️</div>
+            <h3 class="spec-title">Sostenibilitat</h3>
+            <p class="spec-body">Fusta 100% natural de boscos certificats. Acabats lliures de tòxics i dissolvents.</p>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon">🧼</div>
+            <h3 class="spec-title">Manteniment</h3>
+            <p class="spec-body">Neteja amb drap suau. Sense tractaments especials. Evitar exposició solar directa.</p>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon">🔨</div>
+            <h3 class="spec-title">Muntatge</h3>
+            <p class="spec-body">Instruccions pas a pas incloses. Totes les eines necessàries. Temps estimat: 30–45 min.</p>
+        </div>
+    </div>
+</section>
+
+<!-- TECH GALLERY -->
+<div class="tech-gallery fade-in">
+    <div class="tech-gallery-inner">
+        <div class="tech-image-wrap">
+            <img src="https://i.imgur.com/dpPDWtl.jpg" alt="Vista tècnica" class="tech-image">
+        </div>
+        <div>
+            <div class="section-eyebrow" style="justify-content:flex-start;margin-bottom:1rem;">Vista tècnica</div>
+            <h3 class="dims-header">Mesures i capacitats</h3>
+            <ul class="dims-list">
+                <li class="dim-row"><span class="dim-label">Amplada total</span><span class="dim-val">45 cm</span></li>
+                <li class="dim-row"><span class="dim-label">Profunditat</span><span class="dim-val">40 cm</span></li>
+                <li class="dim-row"><span class="dim-label">Alçada</span><span class="dim-val">48 cm</span></li>
+                <li class="dim-row"><span class="dim-label">Alçada calaixos</span><span class="dim-val">18 mm</span></li>
+                <li class="dim-row"><span class="dim-label">Pes total</span><span class="dim-val">18 kg</span></li>
+                <li class="dim-row"><span class="dim-label">Capacitat màxima</span><span class="dim-val">20 kg</span></li>
             </ul>
         </div>
-    </nav>
+    </div>
+</div>
 
-    <!-- HERO / PRODUCTE PRINCIPAL -->
-    <section class="hero" id="producte">
-        <div class="product-gallery">
-            <img src="https://image2url.com/r2/default/images/1770842774855-5fe5f772-1799-4c91-a6ad-cf9c4bf67f13.jpg" id="main-product-image">
-            <div class="quality-badge">100% NATURAL</div>
+<!-- BENEFITS -->
+<section class="benefits-section fade-in" id="beneficis">
+    <div class="section-header">
+        <div class="section-eyebrow">Per què Fustes La Salle</div>
+        <h2 class="section-title">L'experiència completa</h2>
+    </div>
+    <div class="benefits-grid">
+        <div class="benefit-card">
+            <div class="benefit-icon">🚚</div>
+            <h3 class="benefit-title">Enviament Ràpid</h3>
+            <p class="benefit-text">Lliurament en 5–7 dies laborables a tota Espanya, amb seguiment en temps real des del primer moment.</p>
         </div>
-        
-        <div class="product-info">
-            <!-- TÍTOL - EDITA AQUÍ -->
-            <h1 class="product-title">Tauleta de Nit</h1>
-            <p class="product-subtitle">Elegància en roure natural amb relleu artesanal</p>
-            
-            <!-- VALORACIONS -->
-            <div class="rating">
-                <span class="stars">★★★★★</span>
-                <span class="reviews">(847 valoracions) · 1.243 venudes</span>
-            </div>
-            
-            <!-- PREU - EDITA ELS NÚMEROS AQUÍ -->
-            <div class="price-section">
-                <div class="price-label">Preu especial primera compra</div>
-                <div class="price">
-                    <span class="current-price">90€</span>
-                    <span class="original-price">100€</span>
-                    <span class="discount-tag">-10%</span>
-                </div>
-                <div class="savings">Estalvies 10€</div>
-                <div class="payment-options">
-                    💳 <strong>Pagament fraccionat:</strong> 3 quotes de 30€ sense interessos<br>
-                    🚚 <strong>Nota:</strong> Costos d'enviament es calculen al finalitzar la compra
-                </div>
-            </div>
-            
-            <!-- BOTONS D'ACCIÓ -->
-            <div class="cta-buttons">
-                <button class="btn btn-primary" onclick="window.location.href='carrito.html'">
-                    🛒 Afegir a la cistella
-                </button>
-                <button class="btn btn-secondary" onclick="window.location.href='contacto.html'">
-                    📞 Consultar disponibilitat
-                </button>
-            </div>
-            
-            <!-- CARACTERÍSTIQUES DESTACADES -->
-            <div class="features-grid">
-                <div class="feature-item">
-                    <span class="feature-icon">🌳</span>
-                    <span class="feature-text">Roure 100% natural</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">🔧</span>
-                    <span class="feature-text">Muntatge fàcil</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">🚚</span>
-                    <span class="feature-text">Enviament disponible</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">↩️</span>
-                    <span class="feature-text">Devolució 30 dies</span>
-                </div>
-            </div>
-            
-            <!-- BADGES DE CONFIANÇA -->
-            <div class="trust-badges">
-                <div class="trust-item">
-                    <span class="trust-icon">✓</span>
-                    Garantia 1 any
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">✓</span>
-                    Pagament segur
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">✓</span>
-                    Producte sostenible
-                </div>
-            </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">🔄</div>
+            <h3 class="benefit-title">Devolució 30 Dies</h3>
+            <p class="benefit-text">Retornem els diners íntegrament durant els primers 30 dies, sense preguntes ni complicacions.</p>
         </div>
-    </section>
+        <div class="benefit-card">
+            <div class="benefit-icon">🛡️</div>
+            <h3 class="benefit-title">Garantia 1 Any</h3>
+            <p class="benefit-text">Cobertura completa contra defectes de fabricació amb servei de substitució immediat.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">🌱</div>
+            <h3 class="benefit-title">100% Sostenible</h3>
+            <p class="benefit-text">Fusta natural de boscos certificats, amb gestió responsable i acabats ecològics sense tòxics.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">💳</div>
+            <h3 class="benefit-title">Pagament Flexible</h3>
+            <p class="benefit-text">3 terminis sense interessos o qualsevol mètode de pagament segur a la teva elecció.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">📞</div>
+            <h3 class="benefit-title">Atenció Premium</h3>
+            <p class="benefit-text">Equip disponible de dilluns a divendres, de 15:00 a 19:30h per a qualsevol consulta personalitzada.</p>
+        </div>
+    </div>
+</section>
 
-    <!-- URGÈNCIA / ESTOC LIMITAT -->
-    <section class="urgency-section">
-        <h2 class="urgency-title">⚠️ Només queden 12 unitats en estoc</h2>
-        <p class="stock-warning">A aquest preu no durarà gaire! Més de 50 persones estan veient aquest producte ara mateix</p>
-        
-        <div class="recent-buyers">
-            <span class="buyer-badge">🟢 Maria de Barcelona ha comprat fa 5 min</span>
-            <span class="buyer-badge">🟢 Josep de Girona ha comprat fa 12 min</span>
-            <span class="buyer-badge">🟢 Laura de Lleida ha comprat fa 18 min</span>
+<!-- FOOTER -->
+<footer id="contacte">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <img src="image__5_-removebg-preview__1___1_.png" alt="Fustes La Salle" class="footer-logo">
+            <p>Mobles d'elegància natural per a llars amb personalitat. Qualitat artesanal amb consciència sostenible des de La Seu d'Urgell.</p>
         </div>
-    </section>
+        <div class="footer-col">
+            <h4>Producte</h4>
+            <ul>
+                <li><a href="#especificacions">Especificacions</a></li>
+                <li><a href="#beneficis">Beneficis</a></li>
+                <li><a href="carrito.html">Cistella</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Servei</h4>
+            <ul>
+                <li><a href="contacto.html">Enviaments</a></li>
+                <li><a href="contacto.html">Devolucions</a></li>
+                <li><a href="contacto.html">Garantia</a></li>
+                <li><a href="contacto.html">Preguntes freqüents</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Contacte</h4>
+            <ul>
+                <li><a href="mailto:[email protected]">[email protected]</a></li>
+                <li><a href="#">+34 973 35 XX XX</a></li>
+                <li><a href="#">La Seu d'Urgell — La Salle</a></li>
+                <li><a href="#">Dll–Div: 15:00–19:30</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2025 Fustes La Salle S.L.S. Tots els drets reservats.</p>
+        <p>Política de privacitat &nbsp;·&nbsp; Termes i condicions</p>
+    </div>
+</footer>
 
-    <!-- ESPECIFICACIONS TÈCNIQUES -->
-    <section class="specifications" id="especificacions">
-        <h2 class="section-title">Especificacions Tècniques</h2>
-        
-        <div class="specs-grid">
-            <!-- EDITA AQUESTES TARGETES -->
-            <div class="spec-card">
-                <div class="spec-icon">📐</div>
-                <h3 class="spec-title">Dimensions</h3>
-                <p class="spec-description">
-                    <strong>Alçada:</strong> 48 cm<br>
-                    <strong>Amplada:</strong> 45 cm<br>
-                    <strong>Profunditat:</strong> 40 cm<br>
-                    <strong>Pes:</strong> 18 kg
-                </p>
-            </div>
-            
-            <div class="spec-card">
-                <div class="spec-icon">🪵</div>
-                <h3 class="spec-title">Materials</h3>
-                <p class="spec-description">
-                    Roure natural amb acabat en fusta fosca amb relleu artesanal. Tiradors metàl·lics amb acabat en llautó envellit.
-                </p>
-            </div>
-            
-            <div class="spec-card">
-                <div class="spec-icon">📦</div>
-                <h3 class="spec-title">Característiques</h3>
-                <p class="spec-description">
-                    2 calaixos amb guies metàl·liques<br>
-                    Sistema soft-close<br>
-                    Capacitat: 5 kg per calaix<br>
-                    Capacitat tapa: 20 kg
-                </p>
-            </div>
-            
-            <div class="spec-card">
-                <div class="spec-icon">♻️</div>
-                <h3 class="spec-title">Sostenibilitat</h3>
-                <p class="spec-description">
-                    Fabricat amb fusta 100% natural de boscos gestionats de manera sostenible. Acabats lliures de tòxics.
-                </p>
-            </div>
-            
-            <div class="spec-card">
-                <div class="spec-icon">🧼</div>
-                <h3 class="spec-title">Manteniment</h3>
-                <p class="spec-description">
-                    Neteja fàcil amb drap suau. No requereix tractaments especials. Evitar exposició directa al sol.
-                </p>
-            </div>
-            
-            <div class="spec-card">
-                <div class="spec-icon">🔨</div>
-                <h3 class="spec-title">Muntatge</h3>
-                <p class="spec-description">
-                    Inclou instruccions pas a pas i totes les eines necessàries. Temps de muntatge: 30-45 minuts.
-                </p>
-            </div>
-        </div>
-    </section>
+<script>
+    // CURSOR GLOW
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+    });
 
-    <!-- GALERIA TÈCNICA AMB DIMENSIONS -->
-    <section class="technical-gallery">
-        <h2 class="section-title">Vista Tècnica Detallada</h2>
-        
-        <div class="gallery-content">
-            <img src="https://i.imgur.com/dpPDWtl.jpg" alt="Vista tècnica" class="technical-image" id="technical-image">
-            
-            <div>
-                <h3 class="spec-title">Informació Detallada</h3>
-                <ul class="dimensions-list">
-                    <li class="dimension-item">
-                        <span class="dimension-label">Amplada total</span>
-                        <span class="dimension-value">45 cm</span>
-                    </li>
-                    <li class="dimension-item">
-                        <span class="dimension-label">Profunditat</span>
-                        <span class="dimension-value">40 cm</span>
-                    </li>
-                    <li class="dimension-item">
-                        <span class="dimension-label">Alçada</span>
-                        <span class="dimension-value">48 cm</span>
-                    </li>
-                    <li class="dimension-item">
-                        <span class="dimension-label">Alçada calaixos</span>
-                        <span class="dimension-value">18 mm</span>
-                    </li>
-                    <li class="dimension-item">
-                        <span class="dimension-label">Pes total</span>
-                        <span class="dimension-value">18 kg</span>
-                    </li>
-                    <li class="dimension-item">
-                        <span class="dimension-label">Capacitat màxima (tapa)</span>
-                        <span class="dimension-value">20 kg</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
+    // COUNTDOWN
+    let h=23, m=59, s=45;
+    setInterval(()=>{
+        s--;
+        if(s<0){s=59;m--;}
+        if(m<0){m=59;h--;}
+        if(h<0){h=23;m=59;s=59;}
+        document.getElementById('h').textContent = String(h).padStart(2,'0');
+        document.getElementById('m').textContent = String(m).padStart(2,'0');
+        document.getElementById('s').textContent = String(s).padStart(2,'0');
+    }, 1000);
 
-    <!-- BENEFICIS -->
-    <section class="benefits" id="beneficis">
-        <h2 class="section-title">Per què triar FUSTES LA SALLE?</h2>
-        
-        <div class="benefits-grid">
-            <!-- EDITA AQUESTES TARGETES -->
-            <div class="benefit-card">
-                <div class="benefit-icon">🚚</div>
-                <h3 class="benefit-title">Enviament Ràpid</h3>
-                <p class="benefit-text">Lliurament a domicili en 5-7 dies laborables dins d'Espanya amb seguiment en temps real. Costos d'enviament calculats al finalitzar la compra.</p>
-            </div>
-            
-            <div class="benefit-card">
-                <div class="benefit-icon">🔄</div>
-                <h3 class="benefit-title">Devolució 30 Dies</h3>
-                <p class="benefit-text">No estàs satisfet? Et retornem els diners sense preguntes durant els primers 30 dies</p>
-            </div>
-            
-            <div class="benefit-card">
-                <div class="benefit-icon">🛡️</div>
-                <h3 class="benefit-title">Garantia 1 Any</h3>
-                <p class="benefit-text">Cobertura completa contra defectes de fabricació amb servei de substitució immediat</p>
-            </div>
-            
-            <div class="benefit-card">
-                <div class="benefit-icon">🌱</div>
-                <h3 class="benefit-title">100% Sostenible</h3>
-                <p class="benefit-text">Fusta natural de boscos certificats amb gestió responsable i acabats ecològics</p>
-            </div>
-            
-            <div class="benefit-card">
-                <div class="benefit-icon">💳</div>
-                <h3 class="benefit-title">Pagament Flexible</h3>
-                <p class="benefit-text">Paga en 3 terminis sense interessos o utilitza qualsevol mètode de pagament segur</p>
-            </div>
-            
-            <div class="benefit-card">
-                <div class="benefit-icon">📞</div>
-                <h3 class="benefit-title">Atenció Premium</h3>
-                <p class="benefit-text">Equip d'atenció al client disponible de 15:00 a 19:30, de dilluns a divendres</p>
-            </div>
-        </div>
-    </section>
+    // FADE IN ON SCROLL
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    <!-- FOOTER -->
-    <footer class="footer" id="contacte">
-        <div class="footer-content">
-            <!-- EDITA LA INFORMACIÓ DEL FOOTER -->
-            <div class="footer-section">
-                <h3>FUSTES LA SALLE</h3>
-                <p>Mobles d'elegància natural per a llars amb personalitat. Qualitat artesanal amb consciència sostenible.</p>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Ajuda</h3>
-                <ul>
-                    <li><a href="#especificacions">Especificacions</a></li>
-                    <li><a href="contacto.html">Enviaments</a></li>
-                    <li><a href="contacto.html">Devolucions</a></li>
-                    <li><a href="contacto.html">Garantia</a></li>
-                    <li><a href="contacto.html">Preguntes freqüents</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Contacte</h3>
-                <ul>
-                    <li>📧 <a href="mailto:[email protected]">[email protected]</a></li>
-                    <li>📱 +34 973 35 XX XX</li>
-                    <li>📍 La Seu d'Urgell - La Salle</li>
-                    <li>🕐 Dll-Div: 15:00 - 19:30</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2025 FUSTES LA SALLE. Tots els drets reservats. | Política de privacitat | Termes i condicions</p>
-        </div>
-    </footer>
+    // THUMBNAIL GALLERY
+    document.querySelectorAll('.thumb').forEach(thumb => {
+        thumb.addEventListener('click', function(){
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById('main-product-image').src = this.querySelector('img').src;
+        });
+    });
+</script>
 
-    <script>
-        // COMPTADOR DE TEMPS - Edita els valors inicials aquí
-        let hours = 23;
-        let minutes = 59;
-        let seconds = 45;
-        
-        function updateCountdown() {
-            seconds--;
-            
-            if (seconds < 0) {
-                seconds = 59;
-                minutes--;
-            }
-            
-            if (minutes < 0) {
-                minutes = 59;
-                hours--;
-            }
-            
-            if (hours < 0) {
-                hours = 23;
-                minutes = 59;
-                seconds = 59;
-            }
-            
-            const hoursStr = String(hours).padStart(2, '0');
-            const minutesStr = String(minutes).padStart(2, '0');
-            const secondsStr = String(seconds).padStart(2, '0');
-            
-            document.getElementById('countdown-timer').textContent = 
-                `${hoursStr}:${minutesStr}:${secondsStr}`;
-        }
-        
-        setInterval(updateCountdown, 1000);
-    </script>
+<script src="chatbot-gemini-pro.js"></script>
+</body>
+</html>
 
     <!-- Chatbot -->
     <script src="chatbot-gemini-pro.js"></script>
