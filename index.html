@@ -6,8 +6,10 @@
     <title>Tauleta de Nit — Fustes La Salle</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fontuna&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fontuna&display=swap');
+
         :root {
             --c-dark:     #1a1918;
             --c-darker:   #242323;
@@ -20,14 +22,14 @@
             --c-gold-lt:  #E8D5A3;
             --c-cream:    #F5F0EB;
             --c-white:    #FAFAFA;
-            --font-serif: 'Cormorant Garamond', serif;
-            --font-sans:  'Inter', sans-serif;
+            --font-serif: 'Fontuna', 'Times New Roman', serif;
+            --font-sans:  'Times New Roman', Times, serif;
             --ease-silk: cubic-bezier(0.23, 1, 0.32, 1);
         }
         *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
         html { scroll-behavior: smooth; }
         body {
-            font-family: var(--font-sans);
+            font-family: 'Times New Roman', Times, serif;
             background: var(--c-dark);
             color: var(--c-mist);
             line-height: 1.6;
@@ -58,6 +60,7 @@
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
+            font-family: 'Times New Roman', Times, serif;
         }
         .announce strong { font-weight: 600; }
 
@@ -74,13 +77,13 @@
             padding: 0 3rem; height: 72px;
             display: flex; align-items: center; justify-content: space-between;
         }
-        .logo-img { height: 44px; width: auto; }
+        .logo-img { height: 50px; width: auto; object-fit: contain; }
         .nav-links { display: flex; gap: 3rem; list-style: none; }
         .nav-links a {
             color: var(--c-mist); text-decoration: none;
-            font-size: 0.75rem; letter-spacing: 0.12em;
-            text-transform: uppercase; font-weight: 400;
-            position: relative; transition: color 0.3s;
+            font-size: 0.85rem; letter-spacing: 0.08em;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: 400; position: relative; transition: color 0.3s;
         }
         .nav-links a::after {
             content: ''; position: absolute; bottom: -4px; left: 0;
@@ -94,7 +97,8 @@
             text-transform: uppercase; color: var(--c-dark);
             background: var(--c-gold); padding: 10px 24px;
             border-radius: 2px; text-decoration: none;
-            font-weight: 500; transition: all 0.3s;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: 600; transition: all 0.3s;
         }
         .nav-cta:hover { background: var(--c-gold-lt); }
 
@@ -127,7 +131,12 @@
             position: absolute; top: 24px; left: 24px;
             z-index: 2; display: flex; flex-direction: column; gap: 8px;
         }
-        .badge { display: inline-block; padding: 6px 14px; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; }
+        .badge {
+            display: inline-block; padding: 6px 14px;
+            font-size: 0.65rem; font-weight: 500;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            font-family: 'Times New Roman', Times, serif;
+        }
         .badge-gold { background: var(--c-gold); color: var(--c-dark); }
         .badge-dark { background: rgba(26,25,24,0.88); color: var(--c-mist); border: 1px solid rgba(201,169,110,0.25); }
         .thumbs { display: flex; gap: 12px; margin-top: 16px; }
@@ -145,41 +154,66 @@
             font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
             color: var(--c-gold); margin-bottom: 1.2rem;
             display: flex; align-items: center; gap: 12px;
+            font-family: 'Times New Roman', Times, serif;
         }
         .eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--c-gold); }
+
         .product-title {
-            font-family: var(--font-serif); font-size: 4.2rem; font-weight: 300;
-            color: var(--c-white); line-height: 1.0; letter-spacing: -0.01em; margin-bottom: 1rem;
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 4.8rem;
+            font-weight: 400;
+            color: var(--c-white);
+            line-height: 1.0;
+            letter-spacing: 0.02em;
+            margin-bottom: 1rem;
         }
-        .product-title em { font-style: italic; color: var(--c-gold-lt); }
-        .product-subtitle { font-size: 0.85rem; color: var(--c-light); font-weight: 300; letter-spacing: 0.03em; margin-bottom: 2rem; line-height: 1.7; }
+        .product-title em {
+            font-style: italic;
+            color: var(--c-gold-lt);
+        }
+
+        .product-subtitle {
+            font-size: 1rem;
+            color: var(--c-light);
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
         .rating-row {
             display: flex; align-items: center; gap: 12px;
             margin-bottom: 2.5rem; padding-bottom: 2.5rem;
             border-bottom: 1px solid rgba(174,167,163,0.12);
         }
         .stars { color: var(--c-gold); font-size: 0.85rem; letter-spacing: 2px; }
-        .rating-text { font-size: 0.75rem; color: var(--c-light); letter-spacing: 0.04em; }
+        .rating-text { font-size: 0.85rem; color: var(--c-light); font-family: 'Times New Roman', Times, serif; }
         .rating-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--c-grey); }
 
         /* PRICE */
         .price-block { margin-bottom: 2.5rem; }
         .price-row { display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px; }
-        .price-current { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 300; color: var(--c-white); line-height: 1; }
-        .price-original { font-size: 1.1rem; color: var(--c-grey); text-decoration: line-through; font-weight: 300; }
+        .price-current {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 3.8rem; font-weight: 400;
+            color: var(--c-white); line-height: 1;
+        }
+        .price-original { font-size: 1.1rem; color: var(--c-grey); text-decoration: line-through; font-family: 'Times New Roman', Times, serif; }
         .price-save {
             font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
             background: rgba(201,169,110,0.12); color: var(--c-gold);
             border: 1px solid rgba(201,169,110,0.3); padding: 5px 12px; border-radius: 2px;
+            font-family: 'Times New Roman', Times, serif;
         }
-        .price-note { font-size: 0.75rem; color: var(--c-grey); letter-spacing: 0.03em; }
+        .price-note { font-size: 0.85rem; color: var(--c-grey); font-family: 'Times New Roman', Times, serif; }
         .price-note span { color: var(--c-light); }
 
         /* BUTTONS */
         .cta-group { display: flex; gap: 12px; margin-bottom: 2.5rem; }
         .btn {
-            font-family: var(--font-sans); font-size: 0.72rem; font-weight: 500;
-            letter-spacing: 0.14em; text-transform: uppercase;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.85rem; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
             padding: 16px 32px; border: none; cursor: pointer;
             transition: all 0.35s var(--ease-silk); text-decoration: none;
             display: inline-flex; align-items: center; gap: 10px;
@@ -196,7 +230,8 @@
             display: flex; align-items: center; gap: 10px;
             padding: 12px 16px; background: rgba(36,35,35,0.8);
             border: 1px solid rgba(174,167,163,0.08); border-radius: 3px;
-            font-size: 0.75rem; color: var(--c-mist); letter-spacing: 0.04em;
+            font-size: 0.85rem; color: var(--c-mist);
+            font-family: 'Times New Roman', Times, serif;
             transition: border-color 0.3s, background 0.3s;
         }
         .feature-pill:hover { border-color: rgba(201,169,110,0.2); background: rgba(201,169,110,0.05); }
@@ -205,7 +240,12 @@
             display: flex; gap: 24px; padding: 16px 20px;
             background: rgba(36,35,35,0.5); border: 1px solid rgba(174,167,163,0.08); border-radius: 3px;
         }
-        .trust-item { display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: var(--c-light); letter-spacing: 0.06em; text-transform: uppercase; }
+        .trust-item {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.78rem; color: var(--c-light);
+            letter-spacing: 0.06em; text-transform: uppercase;
+            font-family: 'Times New Roman', Times, serif;
+        }
         .trust-check {
             width: 16px; height: 16px; border: 1px solid var(--c-gold); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
@@ -220,15 +260,21 @@
             display: flex; align-items: center; justify-content: space-between; gap: 2rem;
         }
         .urgency-left { display: flex; flex-direction: column; gap: 6px; }
-        .urgency-title { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400; color: var(--c-white); }
-        .urgency-sub { font-size: 0.78rem; color: var(--c-light); letter-spacing: 0.04em; }
+        .urgency-title {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 1.8rem; font-weight: 400; color: var(--c-white);
+        }
+        .urgency-sub { font-size: 0.9rem; color: var(--c-light); font-family: 'Times New Roman', Times, serif; }
         .urgency-right { display: flex; gap: 24px; flex-shrink: 0; }
         .urgency-badge { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .urgency-num { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 300; color: var(--c-gold); line-height: 1; }
-        .urgency-label { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-grey); }
-        .urgency-sep { font-family: var(--font-serif); font-size: 2rem; color: var(--c-grey); align-self: center; }
+        .urgency-num {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 2.5rem; font-weight: 400; color: var(--c-gold); line-height: 1;
+        }
+        .urgency-label { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-grey); font-family: 'Times New Roman', Times, serif; }
+        .urgency-sep { font-family: 'Fontuna', serif; font-size: 2rem; color: var(--c-grey); align-self: center; }
         .stock-bar-wrap { margin-top: 8px; }
-        .stock-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-grey); margin-bottom: 6px; }
+        .stock-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-grey); margin-bottom: 6px; font-family: 'Times New Roman', Times, serif; }
         .stock-bar { width: 200px; height: 3px; background: rgba(174,167,163,0.1); border-radius: 2px; overflow: hidden; }
         .stock-fill { height: 100%; width: 24%; background: linear-gradient(90deg, var(--c-warm), var(--c-gold)); border-radius: 2px; }
 
@@ -236,14 +282,18 @@
         .specs-section { max-width: 1440px; margin: 0 auto; padding: 6rem 3rem; }
         .section-header { text-align: center; margin-bottom: 4rem; }
         .section-eyebrow {
-            font-size: 0.65rem; letter-spacing: 0.24em; text-transform: uppercase;
+            font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase;
             color: var(--c-gold); margin-bottom: 1rem;
             display: flex; align-items: center; justify-content: center; gap: 16px;
+            font-family: 'Times New Roman', Times, serif;
         }
         .section-eyebrow::before, .section-eyebrow::after {
             content: ''; display: block; width: 40px; height: 1px; background: rgba(201,169,110,0.4);
         }
-        .section-title { font-family: var(--font-serif); font-size: 2.8rem; font-weight: 300; color: var(--c-white); }
+        .section-title {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 3rem; font-weight: 400; color: var(--c-white); letter-spacing: 0.02em;
+        }
         .specs-grid {
             display: grid; grid-template-columns: repeat(3, 1fr);
             gap: 1px; background: rgba(174,167,163,0.08);
@@ -252,9 +302,12 @@
         .spec-card { background: var(--c-darker); padding: 2.5rem 2rem; transition: background 0.4s; }
         .spec-card:hover { background: rgba(50,48,46,0.95); }
         .spec-icon { font-size: 1.5rem; margin-bottom: 1.2rem; opacity: 0.75; }
-        .spec-title { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 400; color: var(--c-white); margin-bottom: 1rem; }
-        .spec-body { font-size: 0.8rem; color: var(--c-light); line-height: 1.9; font-weight: 300; }
-        .spec-body strong { color: var(--c-mist); font-weight: 400; }
+        .spec-title {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 1.3rem; font-weight: 400; color: var(--c-white); margin-bottom: 1rem;
+        }
+        .spec-body { font-size: 0.9rem; color: var(--c-light); line-height: 1.9; font-family: 'Times New Roman', Times, serif; }
+        .spec-body strong { color: var(--c-mist); font-weight: 600; }
 
         /* TECH GALLERY */
         .tech-gallery { background: rgba(22,21,20,0.9); border-top: 1px solid rgba(174,167,163,0.08); border-bottom: 1px solid rgba(174,167,163,0.08); }
@@ -262,12 +315,18 @@
         .tech-image-wrap { position: relative; border-radius: 4px; overflow: hidden; }
         .tech-image-wrap::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,169,110,0.06) 0%, transparent 60%); pointer-events: none; }
         .tech-image { width: 100%; display: block; border-radius: 4px; }
-        .dims-header { font-family: var(--font-serif); font-size: 2rem; font-weight: 300; color: var(--c-white); margin-bottom: 2.5rem; }
+        .dims-header {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 2.2rem; font-weight: 400; color: var(--c-white); margin-bottom: 2.5rem;
+        }
         .dims-list { list-style: none; }
         .dim-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(174,167,163,0.08); transition: padding 0.3s; }
         .dim-row:hover { padding-left: 8px; }
-        .dim-label { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-grey); font-weight: 300; }
-        .dim-val { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 300; color: var(--c-gold); }
+        .dim-label { font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-grey); font-family: 'Times New Roman', Times, serif; }
+        .dim-val {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 1.5rem; font-weight: 400; color: var(--c-gold);
+        }
 
         /* BENEFITS */
         .benefits-section { max-width: 1440px; margin: 0 auto; padding: 6rem 3rem; }
@@ -277,21 +336,27 @@
         .benefit-card:hover::before { transform: scaleX(1); }
         .benefit-card:hover { background: rgba(36,35,35,0.8); }
         .benefit-icon { font-size: 2rem; margin-bottom: 1.5rem; opacity: 0.7; }
-        .benefit-title { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 400; color: var(--c-white); margin-bottom: 1rem; }
-        .benefit-text { font-size: 0.78rem; color: var(--c-light); line-height: 1.9; font-weight: 300; }
+        .benefit-title {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 1.4rem; font-weight: 400; color: var(--c-white); margin-bottom: 1rem;
+        }
+        .benefit-text { font-size: 0.9rem; color: var(--c-light); line-height: 1.9; font-family: 'Times New Roman', Times, serif; }
 
         /* FOOTER */
         footer { background: #111110; border-top: 1px solid rgba(174,167,163,0.08); }
         .footer-inner { max-width: 1440px; margin: 0 auto; padding: 5rem 3rem 3rem; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 3rem; }
-        .footer-brand .footer-logo { height: 36px; width: auto; margin-bottom: 1.5rem; filter: brightness(0.85); }
-        .footer-brand p { font-size: 0.78rem; color: var(--c-grey); line-height: 1.9; max-width: 260px; font-weight: 300; }
-        .footer-col h4 { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c-gold); margin-bottom: 1.5rem; font-weight: 500; }
+        .footer-brand .footer-logo { height: 42px; width: auto; margin-bottom: 1.5rem; object-fit: contain; }
+        .footer-brand p { font-size: 0.9rem; color: var(--c-grey); line-height: 1.9; max-width: 260px; font-family: 'Times New Roman', Times, serif; }
+        .footer-col h4 {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 1rem; letter-spacing: 0.1em; color: var(--c-gold); margin-bottom: 1.5rem; font-weight: 400;
+        }
         .footer-col ul { list-style: none; }
         .footer-col li { margin-bottom: 10px; }
-        .footer-col a { font-size: 0.78rem; color: var(--c-grey); text-decoration: none; font-weight: 300; transition: color 0.3s; }
+        .footer-col a { font-size: 0.85rem; color: var(--c-grey); text-decoration: none; font-family: 'Times New Roman', Times, serif; transition: color 0.3s; }
         .footer-col a:hover { color: var(--c-mist); }
         .footer-bottom { max-width: 1440px; margin: 0 auto; padding: 1.5rem 3rem 2.5rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(174,167,163,0.06); }
-        .footer-bottom p { font-size: 0.68rem; color: rgba(174,167,163,0.35); letter-spacing: 0.05em; }
+        .footer-bottom p { font-size: 0.75rem; color: rgba(174,167,163,0.35); font-family: 'Times New Roman', Times, serif; }
 
         /* FADE IN */
         .fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.8s var(--ease-silk), transform 0.8s var(--ease-silk); }
@@ -306,7 +371,7 @@
         }
         @media (max-width: 768px) {
             .hero { padding: 3rem 1.5rem; }
-            .product-title { font-size: 2.8rem; }
+            .product-title { font-size: 3rem; }
             .nav-links { display: none; }
             .specs-grid, .benefits-grid { grid-template-columns: 1fr; }
             .footer-inner { grid-template-columns: 1fr; }
@@ -440,7 +505,7 @@
                     <span class="urgency-label">Seg</span>
                 </div>
             </div>
-            <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--c-grey)">
+            <div style="font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--c-grey);font-family:'Times New Roman',Times,serif;">
                 🟢 Maria (BCN) · Josep (GI) · Laura (LLE) han comprat avui
             </div>
         </div>
@@ -552,7 +617,7 @@
 <footer id="contacte">
     <div class="footer-inner">
         <div class="footer-brand">
-            <img src="image__5_-removebg-preview__1___1_.png" alt="Fustes La Salle" class="footer-logo">
+            <img src="https://cdn.shopify.com/s/files/1/0757/5794/4972/files/image__5_-removebg-preview_1_1.png?v=1772468497" alt="Fustes La Salle" class="footer-logo">
             <p>Mobles d'elegància natural per a llars amb personalitat. Qualitat artesanal amb consciència sostenible des de La Seu d'Urgell.</p>
         </div>
         <div class="footer-col">
@@ -625,10 +690,5 @@
 </script>
 
 <script src="chatbot-gemini-pro.js"></script>
-</body>
-</html>
-
-    <!-- Chatbot -->
-    <script src="chatbot-gemini-pro.js"></script>
 </body>
 </html>
