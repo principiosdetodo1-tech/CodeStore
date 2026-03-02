@@ -3,510 +3,439 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacte - FUSTES LA SALLE</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Contacte — Fustes La Salle</title>
     <style>
         :root {
-            --color-primary: #1a1a1a;
-            --color-secondary: #8B6F47;
-            --color-accent: #D4AF37;
-            --color-bg-light: #FAF8F5;
-            --color-bg-cream: #F5EFE7;
-            --color-text-dark: #1a1a1a;
-            --color-text-light: #666;
-            --color-white: #ffffff;
-            --color-success: #2D5016;
-            --font-display: 'Playfair Display', serif;
-            --font-body: 'Outfit', sans-serif;
+            --c-dark:    #1a1918;
+            --c-darker:  #242323;
+            --c-grey:    #525254;
+            --c-light:   #959595;
+            --c-mist:    #AEA7A3;
+            --c-warm:    #795238;
+            --c-gold:    #C9A96E;
+            --c-gold-lt: #E8D5A3;
+            --c-white:   #FAFAFA;
+            --ease-silk: cubic-bezier(0.23, 1, 0.32, 1);
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: var(--font-body);
-            color: var(--color-text-dark);
-            background: var(--color-bg-light);
+            font-family: 'Times New Roman', Times, serif;
+            background: var(--c-dark);
+            color: var(--c-mist);
             line-height: 1.6;
+            overflow-x: hidden;
         }
-        
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--c-darker); }
+        ::-webkit-scrollbar-thumb { background: var(--c-gold); border-radius: 2px; }
+
+        .cursor-glow {
+            position: fixed; width: 320px; height: 320px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,169,110,0.07) 0%, transparent 70%);
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        /* ANNOUNCE */
+        .announce {
+            background: var(--c-gold); color: var(--c-dark);
+            text-align: center; padding: 10px 20px;
+            font-size: 0.72rem; font-weight: 500;
+            letter-spacing: 0.15em; text-transform: uppercase;
+        }
+        .announce strong { font-weight: 700; }
+
+        /* NAVBAR */
         .navbar {
-            background: var(--color-white);
-            padding: 1.5rem 2rem;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(26,25,24,0.93);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(201,169,110,0.12);
         }
-        
-        .navbar-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .navbar-inner {
+            max-width: 1440px; margin: 0 auto;
+            padding: 0 3rem; height: 84px;
+            display: flex; align-items: center; justify-content: space-between;
         }
-        
-        .logo {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            text-decoration: none;
-        }
-        
+        .logo-img { height: 64px; width: auto; object-fit: contain; }
         .nav-back {
-            color: var(--color-text-dark);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
+            font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--c-mist); text-decoration: none;
+            display: flex; align-items: center; gap: 8px; transition: color 0.3s;
         }
-        
-        .nav-back:hover {
-            color: var(--color-secondary);
+        .nav-back::before { content: '←'; }
+        .nav-back:hover { color: var(--c-gold); }
+
+        /* PAGE HEADER */
+        .page-header {
+            max-width: 1440px; margin: 0 auto;
+            padding: 5rem 3rem 3rem; text-align: center;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 3rem auto;
-            padding: 0 2rem;
+        .page-eyebrow {
+            font-size: 0.65rem; letter-spacing: 0.24em; text-transform: uppercase;
+            color: var(--c-gold); margin-bottom: 1rem;
+            display: flex; align-items: center; justify-content: center; gap: 16px;
         }
-        
+        .page-eyebrow::before, .page-eyebrow::after {
+            content: ''; display: block; width: 40px; height: 1px;
+            background: rgba(201,169,110,0.35);
+        }
         .page-title {
-            font-family: var(--font-display);
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 1rem;
-            text-align: center;
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 3.5rem; font-weight: 400; color: var(--c-white);
+            letter-spacing: 0.02em; margin-bottom: 0.8rem;
         }
-        
-        .page-subtitle {
-            text-align: center;
-            color: var(--color-text-light);
-            font-size: 1.2rem;
-            margin-bottom: 3rem;
+        .page-sub {
+            font-size: 0.95rem; color: var(--c-light); max-width: 480px;
+            margin: 0 auto; line-height: 1.8;
         }
-        
+
+        /* LAYOUT */
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 2rem 3rem 6rem;
+        }
         .contact-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin-top: 3rem;
+            display: grid; grid-template-columns: 1fr 1.2fr;
+            gap: 2rem; margin-top: 1rem; align-items: start;
         }
-        
-        .contact-info {
-            background: var(--color-white);
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+
+        /* INFO PANEL */
+        .info-panel {
+            background: var(--c-darker);
+            border: 1px solid rgba(174,167,163,0.08);
+            border-radius: 4px; overflow: hidden;
         }
-        
-        .info-title {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 2rem;
+        .panel-header {
+            padding: 1.8rem 2.5rem;
+            border-bottom: 1px solid rgba(174,167,163,0.08);
         }
-        
+        .panel-title {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 1.6rem; font-weight: 400; color: var(--c-white); letter-spacing: 0.02em;
+        }
+
         .info-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: var(--color-bg-cream);
-            border-radius: 15px;
-            transition: transform 0.3s;
+            display: flex; align-items: flex-start; gap: 1.2rem;
+            padding: 1.5rem 2.5rem;
+            border-bottom: 1px solid rgba(174,167,163,0.06);
+            transition: background 0.3s, padding 0.3s;
         }
-        
-        .info-item:hover {
-            transform: translateX(10px);
-        }
-        
+        .info-item:last-of-type { border-bottom: none; }
+        .info-item:hover { background: rgba(36,35,35,0.6); padding-left: 2.8rem; }
         .info-icon {
-            font-size: 2rem;
-            flex-shrink: 0;
+            font-size: 1.2rem; opacity: 0.7; flex-shrink: 0; margin-top: 2px;
         }
-        
-        .info-content h3 {
-            font-weight: 600;
-            color: var(--color-primary);
-            margin-bottom: 0.3rem;
+        .info-content {}
+        .info-label {
+            font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--c-gold); margin-bottom: 5px;
         }
-        
-        .info-content p {
-            color: var(--color-text-light);
-            line-height: 1.8;
+        .info-value {
+            font-size: 0.9rem; color: var(--c-mist); line-height: 1.7;
         }
-        
-        .info-content a {
-            color: var(--color-secondary);
-            text-decoration: none;
+        .info-value a { color: var(--c-mist); text-decoration: none; transition: color 0.3s; }
+        .info-value a:hover { color: var(--c-gold); }
+        .info-note { font-size: 0.75rem; color: var(--c-grey); margin-top: 3px; }
+
+        .tip-box {
+            margin: 0 2.5rem 2rem; padding: 1.2rem 1.5rem;
+            background: rgba(201,169,110,0.04);
+            border: 1px solid rgba(201,169,110,0.1); border-radius: 3px;
         }
-        
-        .info-content a:hover {
-            text-decoration: underline;
+        .tip-box-title {
+            font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--c-gold); margin-bottom: 8px;
         }
-        
-        .contact-form {
-            background: var(--color-white);
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        .tip-box p { font-size: 0.8rem; color: var(--c-grey); line-height: 1.8; }
+
+        /* FORM PANEL */
+        .form-panel {
+            background: var(--c-darker);
+            border: 1px solid rgba(174,167,163,0.08);
+            border-radius: 4px; overflow: hidden;
         }
-        
-        .form-title {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 2rem;
+        .form-body { padding: 2.5rem; }
+
+        /* TOPIC BUTTONS */
+        .topic-label {
+            font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--c-gold); margin-bottom: 1rem;
         }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
+        .topic-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 10px; margin-bottom: 2rem;
         }
-        
+        .topic-btn {
+            padding: 1rem; text-align: center; cursor: pointer;
+            background: rgba(26,25,24,0.6);
+            border: 1px solid rgba(174,167,163,0.12); border-radius: 3px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.82rem; color: var(--c-mist);
+            transition: all 0.3s; letter-spacing: 0.04em;
+        }
+        .topic-btn:hover { border-color: rgba(201,169,110,0.3); color: var(--c-gold-lt); }
+        .topic-btn.active {
+            border-color: var(--c-gold); color: var(--c-gold);
+            background: rgba(201,169,110,0.07);
+        }
+
+        /* FORM FIELDS */
+        .form-group { margin-bottom: 1.2rem; }
         .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--color-primary);
+            display: block; margin-bottom: 6px;
+            font-size: 0.75rem; color: var(--c-light); letter-spacing: 0.06em;
         }
-        
-        .required {
-            color: #C41E3A;
-        }
-        
+        .required { color: rgba(201,169,110,0.7); }
         .form-group input,
         .form-group textarea,
         .form-group select {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--color-bg-cream);
-            border-radius: 10px;
-            font-family: var(--font-body);
-            font-size: 1rem;
-            transition: all 0.3s;
+            width: 100%; padding: 11px 14px;
+            background: rgba(26,25,24,0.7);
+            border: 1px solid rgba(174,167,163,0.14); border-radius: 2px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.9rem; color: var(--c-white);
+            transition: border-color 0.3s;
         }
-        
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: var(--c-grey); }
         .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        .form-group textarea:focus { outline: none; border-color: var(--c-gold); }
+        .form-group textarea { min-height: 140px; resize: vertical; }
+        .form-help { font-size: 0.72rem; color: var(--c-grey); margin-top: 5px; letter-spacing: 0.03em; }
+
+        /* MESSAGES */
+        .msg-box {
+            padding: 12px 16px; border-radius: 2px; margin-bottom: 1rem;
+            font-size: 0.82rem; letter-spacing: 0.04em; display: none;
         }
-        
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
+        .msg-success {
+            background: rgba(122,184,122,0.1); border: 1px solid rgba(122,184,122,0.25);
+            color: #7ab87a;
         }
-        
-        .form-help {
-            font-size: 0.85rem;
-            color: var(--color-text-light);
-            margin-top: 0.3rem;
+        .msg-error {
+            background: rgba(192,96,96,0.1); border: 1px solid rgba(192,96,96,0.25);
+            color: #c06060;
         }
-        
+
+        /* SUBMIT */
         .btn-submit {
-            width: 100%;
-            padding: 1.2rem;
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-            color: var(--color-white);
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            font-family: var(--font-body);
-            margin-top: 1rem;
+            width: 100%; padding: 15px;
+            background: var(--c-gold); color: var(--c-dark);
+            border: none; border-radius: 2px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.85rem; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            cursor: pointer; transition: all 0.35s var(--ease-silk);
+            margin-top: 0.5rem;
         }
-        
         .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: var(--c-gold-lt); transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(201,169,110,0.22);
         }
-        
-        .btn-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* FADE IN */
+        .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.8s var(--ease-silk), transform 0.8s var(--ease-silk); }
+        .fade-in.visible { opacity: 1; transform: none; }
+
+        /* RESPONSIVE */
+        @media (max-width: 960px) {
+            .contact-layout { grid-template-columns: 1fr; }
+            .container { padding: 2rem 1.5rem 4rem; }
+            .navbar-inner { padding: 0 1.5rem; }
+            .page-header { padding: 3rem 1.5rem 2rem; }
+            .page-title { font-size: 2.5rem; }
         }
-        
-        .success-message {
-            background: var(--color-success);
-            color: var(--color-white);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            display: none;
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        .error-message {
-            background: #C41E3A;
-            color: var(--color-white);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            display: none;
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        .quick-topics {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .topic-btn {
-            padding: 1rem;
-            background: var(--color-bg-cream);
-            border: 3px solid #ddd;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: var(--font-body);
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--color-text-dark);
-            position: relative;
-        }
-        
-        .topic-btn:hover {
-            background: #e8dcc8;
-            border-color: var(--color-accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .topic-btn.active {
-            background: var(--color-secondary) !important;
-            color: var(--color-white) !important;
-            border-color: var(--color-secondary) !important;
-            font-weight: 700;
-            box-shadow: 0 6px 20px rgba(139, 111, 71, 0.4) !important;
-            transform: scale(1.05) !important;
-        }
-        
-        .topic-btn.active::before {
-            content: '✓ ';
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-right: 0.3rem;
-        }
-        
-        .topic-btn.active:hover {
-            background: var(--color-secondary) !important;
-            transform: scale(1.05) !important;
-        }
-        
-        @media (max-width: 968px) {
-            .contact-layout {
-                grid-template-columns: 1fr;
-            }
-            
-            .page-title {
-                font-size: 2rem;
-            }
-            
-            .quick-topics {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 600px) {
+            .topic-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar-content">
-            <a href="index.html" class="logo">FUSTES LA SALLE</a>
-            <a href="index.html" class="nav-back">← Tornar a la botiga</a>
-        </div>
-    </nav>
 
-    <div class="container">
-        <h1 class="page-title">Contacta amb Nosaltres</h1>
-        <p class="page-subtitle">Estem aquí per ajudar-te amb qualsevol consulta sobre els nostres productes</p>
+<div class="cursor-glow" id="cursor-glow"></div>
 
-        <div class="contact-layout">
-            <!-- Contact Information -->
-            <div class="contact-info">
-                <h2 class="info-title">Informació de Contacte</h2>
-                
-                <div class="info-item">
-                    <div class="info-icon">📧</div>
-                    <div class="info-content">
-                        <h3>Correu Electrònic</h3>
-                        <p><a href="/cdn-cgi/l/email-protection#65031016110016090416040909004b160003000125090416040909004b060411"><span class="__cf_email__" data-cfemail="44223137302137282537252828216a372122212004282537252828216a272530">[email&#160;protected]</span></a></p>
-                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Respostem en menys de 24 hores</p>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">📱</div>
-                    <div class="info-content">
-                        <h3>Telèfon</h3>
-                        <p>+34 973 35 XX XX</p>
-                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Disponible per consultes urgents</p>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">📍</div>
-                    <div class="info-content">
-                        <h3>Ubicació</h3>
-                        <p>La Seu d'Urgell - La Salle</p>
-                        <p>Lleida, Catalunya</p>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">🕐</div>
-                    <div class="info-content">
-                        <h3>Horari d'Atenció</h3>
-                        <p>Dilluns a Divendres</p>
-                        <p>15:00 - 19:30</p>
-                        <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--color-text-light);">Cap de setmana tancat</p>
-                    </div>
-                </div>
+<!-- ANNOUNCE -->
+<div class="announce">
+    <strong>Horari d'atenció</strong> — Dilluns a Divendres · 15:00 – 19:30
+</div>
 
-                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--color-bg-light); border-radius: 15px;">
-                    <h3 style="margin-bottom: 1rem; color: var(--color-primary);">💡 Consell Ràpid</h3>
-                    <p style="color: var(--color-text-light); line-height: 1.8;">
-                        Per a consultes sobre disponibilitat de productes, enviament o opcions de pagament, 
-                        omple el formulari i et respondrem el més aviat possible durant el nostre horari d'atenció.
-                    </p>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="index.html">
+            <img src="https://cdn.shopify.com/s/files/1/0757/5794/4972/files/image__5_-removebg-preview_1_1.png?v=1772468497"
+                 alt="Fustes La Salle" class="logo-img">
+        </a>
+        <a href="index.html" class="nav-back">Tornar a la botiga</a>
+    </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header fade-in">
+    <div class="page-eyebrow">Estem aquí per tu</div>
+    <h1 class="page-title">Contacte</h1>
+    <p class="page-sub">Resolvem qualsevol consulta sobre els nostres productes, enviaments o pagaments</p>
+</div>
+
+<!-- CONTAINER -->
+<div class="container">
+    <div class="contact-layout">
+
+        <!-- INFO -->
+        <div class="info-panel fade-in">
+            <div class="panel-header">
+                <div class="panel-title">Informació de Contacte</div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon">✉</div>
+                <div class="info-content">
+                    <div class="info-label">Correu Electrònic</div>
+                    <div class="info-value"><a href="mailto:[email protected]">[email protected]</a></div>
+                    <div class="info-note">Respostem en menys de 24 hores</div>
                 </div>
             </div>
 
-            <!-- Contact Form -->
-            <div class="contact-form">
-                <h2 class="form-title">Envia'ns un Missatge</h2>
-                
-                <div class="success-message" id="successMessage">
-                    ✅ Missatge enviat correctament! Ens posarem en contacte aviat.
+            <div class="info-item">
+                <div class="info-icon">☎</div>
+                <div class="info-content">
+                    <div class="info-label">Telèfon</div>
+                    <div class="info-value">+34 973 35 XX XX</div>
+                    <div class="info-note">Disponible en horari d'atenció</div>
                 </div>
-                
-                <div class="error-message" id="errorMessage">
-                    ❌ Si us plau, omple tots els camps obligatoris.
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon">◎</div>
+                <div class="info-content">
+                    <div class="info-label">Ubicació</div>
+                    <div class="info-value">La Seu d'Urgell — La Salle<br>Lleida, Catalunya</div>
                 </div>
-                
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon">◷</div>
+                <div class="info-content">
+                    <div class="info-label">Horari d'Atenció</div>
+                    <div class="info-value">Dilluns a Divendres<br>15:00 – 19:30</div>
+                    <div class="info-note">Cap de setmana tancat</div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <div class="tip-box-title">Consell</div>
+                <p>Per a consultes sobre disponibilitat, enviament o pagament, omple el formulari i et respondrem el més aviat possible durant el nostre horari d'atenció.</p>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="form-panel fade-in">
+            <div class="panel-header">
+                <div class="panel-title">Envia'ns un Missatge</div>
+            </div>
+            <div class="form-body">
+
+                <div class="msg-box msg-success" id="successMsg">✓ Missatge enviat correctament. Redirigint...</div>
+                <div class="msg-box msg-error" id="errorMsg">Omple tots els camps obligatoris.</div>
+
                 <form id="contactForm" onsubmit="handleSubmit(event)">
+
                     <div class="form-group">
-                        <label>Motiu de la consulta <span class="required">*</span></label>
-                        <div class="quick-topics">
-                            <button type="button" class="topic-btn" onclick="selectTopic(this, 'Disponibilitat de producte')">
+                        <div class="topic-label">Motiu de la consulta <span class="required">*</span></div>
+                        <div class="topic-grid">
+                            <button type="button" class="topic-btn" onclick="selectTopic(this,'Disponibilitat de producte')">
                                 📦 Disponibilitat
                             </button>
-                            <button type="button" class="topic-btn" onclick="selectTopic(this, 'Informació d\'enviament')">
+                            <button type="button" class="topic-btn" onclick="selectTopic(this,'Informació d\'enviament')">
                                 🚚 Enviament
                             </button>
-                            <button type="button" class="topic-btn" onclick="selectTopic(this, 'Opcions de pagament')">
+                            <button type="button" class="topic-btn" onclick="selectTopic(this,'Opcions de pagament')">
                                 💳 Pagament
                             </button>
-                            <button type="button" class="topic-btn" onclick="selectTopic(this, 'Altres consultes')">
+                            <button type="button" class="topic-btn" onclick="selectTopic(this,'Altres consultes')">
                                 💬 Altres
                             </button>
                         </div>
-                        <input type="hidden" id="topic" name="topic" required>
+                        <input type="hidden" id="topic" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="name">Nom complet <span class="required">*</span></label>
-                        <input type="text" id="name" name="name" placeholder="El teu nom" required>
+                        <input type="text" id="name" placeholder="El teu nom" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="email">Correu electrònic <span class="required">*</span></label>
-                        <input type="email" id="email" name="email" placeholder="exemple@email.com" required>
+                        <input type="email" id="email" placeholder="exemple@email.com" required>
                         <div class="form-help">Utilitzarem aquest email per respondre't</div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="phone">Telèfon (opcional)</label>
-                        <input type="tel" id="phone" name="phone" placeholder="+34 600 000 000">
+                        <input type="tel" id="phone" placeholder="+34 600 000 000">
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="message">Missatge <span class="required">*</span></label>
-                        <textarea id="message" name="message" placeholder="Explica'ns en què et podem ajudar..." required></textarea>
+                        <textarea id="message" placeholder="Explica'ns en què et podem ajudar..." required></textarea>
                         <div class="form-help">Sigues el més específic possible per poder ajudar-te millor</div>
                     </div>
-                    
+
                     <button type="submit" class="btn-submit" id="submitBtn">
-                        Enviar Missatge 📨
+                        Enviar Missatge →
                     </button>
                 </form>
             </div>
         </div>
-    </div>
 
-    <script>
-        let selectedTopic = '';
-        
-        function selectTopic(button, topic) {
-            console.log('Selecting topic:', topic);
-            
-            // Remove active class from all buttons
-            const allButtons = document.querySelectorAll('.topic-btn');
-            allButtons.forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Add active class to clicked button
-            button.classList.add('active');
-            selectedTopic = topic;
-            document.getElementById('topic').value = topic;
-            
-            console.log('Topic selected:', topic);
-            console.log('Button has active class:', button.classList.contains('active'));
+    </div>
+</div>
+
+<script>
+    // CURSOR GLOW
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top  = e.clientY + 'px';
+    });
+
+    // FADE IN
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // TOPIC SELECT
+    function selectTopic(btn, topic) {
+        document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('topic').value = topic;
+    }
+
+    // SUBMIT
+    function handleSubmit(e) {
+        e.preventDefault();
+        const topic   = document.getElementById('topic').value;
+        const name    = document.getElementById('name').value;
+        const email   = document.getElementById('email').value;
+        const message = document.getElementById('message').value;
+
+        if (!topic || !name || !email || !message) {
+            document.getElementById('errorMsg').style.display = 'block';
+            document.getElementById('successMsg').style.display = 'none';
+            setTimeout(() => document.getElementById('errorMsg').style.display = 'none', 3000);
+            return;
         }
-        
-        function handleSubmit(event) {
-            event.preventDefault();
-            console.log('Form submitted');
-            
-            // Get form values
-            const topic = document.getElementById('topic').value;
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const message = document.getElementById('message').value;
-            
-            console.log('Form values:', { topic, name, email, message });
-            
-            // Validate
-            if (!topic || !name || !email || !message) {
-                document.getElementById('errorMessage').style.display = 'block';
-                document.getElementById('successMessage').style.display = 'none';
-                setTimeout(() => {
-                    document.getElementById('errorMessage').style.display = 'none';
-                }, 3000);
-                return;
-            }
-            
-            // Show success message
-            document.getElementById('successMessage').style.display = 'block';
-            document.getElementById('errorMessage').style.display = 'none';
-            
-            // Disable button
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = '✓ Redirigint...';
-            
-            // Redirect immediately to confirmation page
-            console.log('Redirecting to confirmation page...');
-            window.location.href = 'confirmacion-contacto.html';
-        }
-    </script>
+
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('errorMsg').style.display = 'none';
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Enviant...';
+        setTimeout(() => window.location.href = 'confirmacion-contacto.html', 1200);
+    }
+</script>
+</body>
+</html>
