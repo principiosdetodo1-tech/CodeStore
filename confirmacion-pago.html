@@ -3,394 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagament Confirmat - FUSTES LA SALLE</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Pagament Confirmat — Fustes La Salle</title>
     <style>
         :root {
-            --color-primary: #1a1a1a;
-            --color-secondary: #8B6F47;
-            --color-accent: #D4AF37;
-            --color-bg-light: #FAF8F5;
-            --color-success: #2D5016;
-            --color-white: #ffffff;
-            --font-display: 'Playfair Display', serif;
-            --font-body: 'Outfit', sans-serif;
+            --c-dark:    #1a1918;
+            --c-darker:  #242323;
+            --c-grey:    #525254;
+            --c-light:   #959595;
+            --c-mist:    #AEA7A3;
+            --c-warm:    #795238;
+            --c-gold:    #C9A96E;
+            --c-gold-lt: #E8D5A3;
+            --c-white:   #FAFAFA;
+            --ease-silk: cubic-bezier(0.23, 1, 0.32, 1);
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: var(--font-body);
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            font-family: 'Times New Roman', Times, serif;
+            background: var(--c-dark);
+            color: var(--c-mist);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 3rem 1.5rem;
+            overflow-x: hidden;
         }
-        
-        @keyframes checkmark {
-            0% {
-                transform: scale(0) rotate(0deg);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.2) rotate(180deg);
-            }
-            100% {
-                transform: scale(1) rotate(360deg);
-                opacity: 1;
-            }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--c-darker); }
+        ::-webkit-scrollbar-thumb { background: var(--c-gold); border-radius: 2px; }
+
+        /* PARTICLES */
+        .particle {
+            position: fixed; width: 6px; height: 6px; border-radius: 50%;
+            pointer-events: none; opacity: 0;
+            animation: fall 4s ease-out forwards;
         }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes fall {
+            0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(540deg); opacity: 0; }
         }
-        
-        @keyframes confetti {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
+
+        /* CARD */
+        .card {
+            max-width: 560px; width: 100%;
+            background: var(--c-darker);
+            border: 1px solid rgba(201,169,110,0.15);
+            border-radius: 4px; overflow: hidden;
+            animation: rise 0.7s var(--ease-silk) both;
         }
-        
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: var(--color-accent);
-            opacity: 0;
-            animation: confetti 3s ease-out;
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(32px); }
+            to   { opacity: 1; transform: none; }
         }
-        
-        .container {
-            max-width: 600px;
-            width: 100%;
-            background: var(--color-white);
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            padding: 4rem 3rem;
+
+        /* SUCCESS HEADER */
+        .card-top {
+            background: linear-gradient(135deg, rgba(201,169,110,0.1) 0%, rgba(121,82,56,0.08) 100%);
+            border-bottom: 1px solid rgba(201,169,110,0.12);
+            padding: 3rem 2.5rem 2.5rem;
             text-align: center;
-            animation: fadeInUp 0.6s ease;
         }
-        
-        .success-icon {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, var(--color-success) 0%, #4CAF50 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 2rem;
-            box-shadow: 0 10px 40px rgba(45, 80, 22, 0.3);
-            animation: checkmark 0.8s ease 0.3s both;
+        .check-ring {
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 1px solid rgba(201,169,110,0.3);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.5rem;
+            animation: popIn 0.6s var(--ease-silk) 0.3s both;
         }
-        
-        .success-icon::before {
-            content: '✓';
-            color: white;
-            font-size: 4rem;
-            font-weight: bold;
+        @keyframes popIn {
+            from { transform: scale(0); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
         }
-        
+        .check-symbol {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 2rem; color: var(--c-gold); line-height: 1;
+        }
         .success-title {
-            font-family: var(--font-display);
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--color-success);
-            margin-bottom: 1rem;
-            animation: fadeInUp 0.6s ease 0.5s both;
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 2.2rem; font-weight: 400; color: var(--c-white);
+            letter-spacing: 0.02em; margin-bottom: 0.6rem;
+            animation: rise 0.6s var(--ease-silk) 0.4s both;
         }
-        
-        .success-message {
-            font-size: 1.2rem;
-            color: var(--color-primary);
-            margin-bottom: 2rem;
-            line-height: 1.8;
-            animation: fadeInUp 0.6s ease 0.7s both;
+        .success-sub {
+            font-size: 0.88rem; color: var(--c-light); line-height: 1.7;
+            animation: rise 0.6s var(--ease-silk) 0.5s both;
         }
-        
-        .order-details {
-            background: var(--color-bg-light);
-            border-radius: 20px;
-            padding: 2rem;
-            margin: 2rem 0;
-            text-align: left;
-            animation: fadeInUp 0.6s ease 0.9s both;
-        }
-        
-        .order-details-title {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 1.5rem;
+
+        /* ORDER NUMBER */
+        .order-num-wrap {
+            padding: 1.5rem 2.5rem;
+            border-bottom: 1px solid rgba(174,167,163,0.08);
             text-align: center;
+            animation: rise 0.6s var(--ease-silk) 0.6s both;
         }
-        
+        .order-num-label {
+            font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+            color: var(--c-grey); margin-bottom: 8px;
+        }
+        .order-num-value {
+            font-family: 'Fontuna', 'Times New Roman', serif;
+            font-size: 1.8rem; font-weight: 400; color: var(--c-gold);
+            letter-spacing: 0.06em;
+        }
+
+        /* DETAILS */
+        .details-wrap {
+            padding: 0 2.5rem;
+            animation: rise 0.6s var(--ease-silk) 0.7s both;
+        }
         .detail-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 0; border-bottom: 1px solid rgba(174,167,163,0.06);
+            font-size: 0.85rem;
         }
-        
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-        
-        .detail-label {
-            color: #666;
-            font-weight: 500;
-        }
-        
-        .detail-value {
-            color: var(--color-primary);
-            font-weight: 600;
-        }
-        
-        .order-number {
-            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
-            color: white;
+        .detail-row:last-child { border-bottom: none; }
+        .d-label { color: var(--c-grey); letter-spacing: 0.04em; }
+        .d-value { color: var(--c-mist); }
+        .d-value.gold { color: var(--c-gold); }
+        .d-value.green { color: #7ab87a; }
+
+        /* NEXT STEPS */
+        .steps-wrap {
+            margin: 0 2.5rem 2rem;
             padding: 1.5rem;
-            border-radius: 15px;
-            margin: 2rem 0;
-            animation: fadeInUp 0.6s ease 1.1s both;
+            background: rgba(201,169,110,0.04);
+            border: 1px solid rgba(201,169,110,0.1);
+            border-radius: 3px;
+            animation: rise 0.6s var(--ease-silk) 0.8s both;
         }
-        
-        .order-number-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-bottom: 0.5rem;
+        .steps-title {
+            font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--c-gold); margin-bottom: 1rem;
         }
-        
-        .order-number-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            font-family: monospace;
-            letter-spacing: 2px;
+        .step-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 6px 0; font-size: 0.82rem; color: var(--c-light); line-height: 1.5;
         }
-        
-        .next-steps {
-            text-align: left;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: #fff3cd;
-            border-radius: 15px;
-            border-left: 4px solid var(--color-accent);
-            animation: fadeInUp 0.6s ease 1.3s both;
+        .step-dot {
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--c-gold); flex-shrink: 0; margin-top: 6px;
         }
-        
-        .next-steps-title {
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+
+        /* BUTTON */
+        .btn-wrap {
+            padding: 0 2.5rem 2.5rem;
+            animation: rise 0.6s var(--ease-silk) 0.9s both;
         }
-        
-        .next-steps ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .next-steps li {
-            padding: 0.5rem 0;
-            color: #666;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-        }
-        
-        .next-steps li::before {
-            content: '✓';
-            color: var(--color-success);
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        
         .btn-home {
-            display: inline-block;
-            padding: 1.2rem 3rem;
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            margin-top: 1rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            animation: fadeInUp 0.6s ease 1.5s both;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 15px;
+            background: var(--c-gold); color: var(--c-dark);
+            text-decoration: none; border-radius: 2px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.82rem; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            transition: all 0.35s var(--ease-silk);
         }
-        
         .btn-home:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: var(--c-gold-lt); transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(201,169,110,0.22);
         }
-        
-        .contact-info {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 2px solid var(--color-bg-light);
-            color: #666;
-            font-size: 0.9rem;
-            line-height: 1.8;
-            animation: fadeInUp 0.6s ease 1.7s both;
+
+        /* CONTACT */
+        .contact-wrap {
+            padding: 1.5rem 2.5rem 2.5rem; text-align: center;
+            border-top: 1px solid rgba(174,167,163,0.06);
+            animation: rise 0.6s var(--ease-silk) 1s both;
         }
-        
-        .contact-info a {
-            color: var(--color-secondary);
-            text-decoration: none;
-            font-weight: 600;
+        .contact-wrap p { font-size: 0.78rem; color: var(--c-grey); line-height: 1.9; }
+        .contact-wrap a { color: var(--c-gold); text-decoration: none; }
+        .contact-wrap a:hover { color: var(--c-gold-lt); }
+
+        /* LOGO TOP */
+        .logo-top {
+            margin-bottom: 2rem;
+            animation: rise 0.6s var(--ease-silk) 0.1s both;
         }
-        
-        .contact-info a:hover {
-            text-decoration: underline;
-        }
-        
-        @media (max-width: 576px) {
-            .container {
-                padding: 2rem 1.5rem;
-            }
-            
-            .success-title {
-                font-size: 2rem;
-            }
-            
-            .success-icon {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .success-icon::before {
-                font-size: 3rem;
-            }
-        }
+        .logo-top img { height: 52px; width: auto; object-fit: contain; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="success-icon"></div>
-        
-        <h1 class="success-title">Pagament Realitzat amb Èxit!</h1>
-        
-        <p class="success-message">
-            Gràcies per la teva compra a FUSTES LA SALLE. 
-            Hem rebut el teu pagament correctament i estem processant la teva comanda.
-        </p>
 
-        <div class="order-number">
-            <div class="order-number-label">Número de Comanda</div>
-            <div class="order-number-value" id="orderNumber">FS-2025-0001</div>
-        </div>
-
-        <div class="order-details">
-            <h3 class="order-details-title">Detalls de la Compra</h3>
-            
-            <div class="detail-row">
-                <span class="detail-label">Producte</span>
-                <span class="detail-value">Tauleta de Nit</span>
-            </div>
-            
-            <div class="detail-row">
-                <span class="detail-label">Quantitat</span>
-                <span class="detail-value" id="orderQty">1 unitat</span>
-            </div>
-            
-            <div class="detail-row">
-                <span class="detail-label">Import Total</span>
-                <span class="detail-value" id="orderTotal">110€</span>
-            </div>
-            
-            <div class="detail-row">
-                <span class="detail-label">Data</span>
-                <span class="detail-value" id="orderDate"></span>
-            </div>
-            
-            <div class="detail-row">
-                <span class="detail-label">Estat</span>
-                <span class="detail-value" style="color: var(--color-success);">✓ Confirmat</span>
-            </div>
-        </div>
-
-        <div class="next-steps">
-            <div class="next-steps-title">📋 Propers Passos</div>
-            <ul>
-                <li>Rebràs un email de confirmació en els propers minuts</li>
-                <li>Prepararem la teva comanda en les properes 24-48 hores</li>
-                <li>T'enviarem un email amb el seguiment de l'enviament</li>
-                <li>Temps de lliurament estimat: 3-5 dies laborables</li>
-            </ul>
-        </div>
-
-        <a href="index.html" class="btn-home">
-            🏠 Tornar a la Pàgina Principal
+    <div class="logo-top">
+        <a href="index.html">
+            <img src="https://cdn.shopify.com/s/files/1/0757/5794/4972/files/image__5_-removebg-preview_1_1.png?v=1772468497"
+                 alt="Fustes La Salle">
         </a>
-
-        <div class="contact-info">
-            <strong>Necessites ajuda?</strong><br>
-            Contacta'ns a <a href="/cdn-cgi/l/email-protection#1a7c6f696e7f69767b697b76767f34697f7c7f7e5a767b697b76767f34797b6e"><span class="__cf_email__" data-cfemail="6d0b181e19081e010c1e0c010108431e080b08092d010c1e0c010108430e0c19">[email&#160;protected]</span></a><br>
-            o truca'ns al <strong>+34 973 35 XX XX</strong><br>
-            Horari: Dilluns a Divendres, 15:00 - 19:30
-        </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        // Generate order number
-        const orderNum = 'FS-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
-        document.getElementById('orderNumber').textContent = orderNum;
+    <div class="card">
 
-        // Get order data from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const total = urlParams.get('total') || '110';
-        const qty = urlParams.get('qty') || '1';
-        
-        document.getElementById('orderTotal').textContent = total + '€';
-        document.getElementById('orderQty').textContent = qty + (qty == 1 ? ' unitat' : ' unitats');
-        
-        // Set current date
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('ca-ES', { 
-            day: 'numeric', 
-            month: 'long', 
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-        document.getElementById('orderDate').textContent = dateStr;
+        <div class="card-top">
+            <div class="check-ring">
+                <span class="check-symbol">✓</span>
+            </div>
+            <h1 class="success-title">Pagament Confirmat</h1>
+            <p class="success-sub">
+                Gràcies per la teva compra a Fustes La Salle.<br>
+                Hem rebut el teu pagament i estem preparant la teva comanda.
+            </p>
+        </div>
 
-        // Create confetti effect
-        function createConfetti() {
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
-                    confetti.style.backgroundColor = ['#D4AF37', '#8B6F47', '#2D5016', '#4CAF50'][Math.floor(Math.random() * 4)];
-                    document.body.appendChild(confetti);
-                    
-                    setTimeout(() => confetti.remove(), 3000);
-                }, i * 50);
-            }
+        <div class="order-num-wrap">
+            <div class="order-num-label">Número de comanda</div>
+            <div class="order-num-value" id="orderNumber">FS-2025-0001</div>
+        </div>
+
+        <div class="details-wrap">
+            <div class="detail-row">
+                <span class="d-label">Producte</span>
+                <span class="d-value">Tauleta de Nit</span>
+            </div>
+            <div class="detail-row">
+                <span class="d-label">Quantitat</span>
+                <span class="d-value" id="orderQty">1 unitat</span>
+            </div>
+            <div class="detail-row">
+                <span class="d-label">Import Total</span>
+                <span class="d-value gold" id="orderTotal">—</span>
+            </div>
+            <div class="detail-row">
+                <span class="d-label">Data</span>
+                <span class="d-value" id="orderDate">—</span>
+            </div>
+            <div class="detail-row">
+                <span class="d-label">Estat</span>
+                <span class="d-value green">✓ Confirmat</span>
+            </div>
+        </div>
+
+        <div class="steps-wrap">
+            <div class="steps-title">Propers passos</div>
+            <div class="step-item"><div class="step-dot"></div>Rebràs un email de confirmació en els propers minuts</div>
+            <div class="step-item"><div class="step-dot"></div>Prepararem la teva comanda en les properes 24–48 hores</div>
+            <div class="step-item"><div class="step-dot"></div>T'enviarem un email amb el seguiment de l'enviament</div>
+            <div class="step-item"><div class="step-dot"></div>Temps de lliurament estimat: 3–5 dies laborables</div>
+        </div>
+
+        <div class="btn-wrap">
+            <a href="index.html" class="btn-home">Tornar a la botiga →</a>
+        </div>
+
+        <div class="contact-wrap">
+            <p>
+                Necessites ajuda? Contacta'ns a
+                <a href="mailto:[email protected]">[email protected]</a><br>
+                o truca'ns al <strong style="color:var(--c-mist)">+34 973 35 XX XX</strong><br>
+                Horari: Dilluns a Divendres, 15:00 – 19:30
+            </p>
+        </div>
+
+    </div>
+
+<script>
+    // ORDER NUMBER
+    const orderNum = 'FS-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random()*9999)+1).padStart(4,'0');
+    document.getElementById('orderNumber').textContent = orderNum;
+
+    // URL PARAMS
+    const urlParams = new URLSearchParams(window.location.search);
+    const total = urlParams.get('total') || '—';
+    const qty   = parseInt(urlParams.get('qty')) || 1;
+    document.getElementById('orderTotal').textContent = total !== '—' ? total + '€' : '—';
+    document.getElementById('orderQty').textContent   = qty + (qty === 1 ? ' unitat' : ' unitats');
+
+    // DATE
+    document.getElementById('orderDate').textContent = new Date().toLocaleDateString('ca-ES', {
+        day: 'numeric', month: 'long', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+    });
+
+    // PARTICLES
+    function spawnParticles() {
+        const colors = ['#C9A96E','#E8D5A3','#795238','#AEA7A3'];
+        for (let i = 0; i < 40; i++) {
+            setTimeout(() => {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.top = '-10px';
+                p.style.background = colors[Math.floor(Math.random()*colors.length)];
+                p.style.animationDelay = (Math.random() * 0.8) + 's';
+                p.style.animationDuration = (3 + Math.random()*2) + 's';
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 5000);
+            }, i * 60);
         }
+    }
+    setTimeout(spawnParticles, 400);
+</script>
+</body>
+</html>
