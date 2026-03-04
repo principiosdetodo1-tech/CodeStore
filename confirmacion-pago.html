@@ -249,7 +249,7 @@
         <div class="contact-wrap">
             <p>
                 Necessites ajuda? Contacta'ns a
-                <a href="mailto:[email protected]">[email protected]</a><br>
+                <a href="mailto:fusteslasalle.sefed@lasalle.cat">fusteslasalle.sefed@lasalle.cat</a><br>
                 o truca'ns al <strong style="color:var(--c-mist)">+34 973 35 XX XX</strong><br>
                 Horari: Dilluns a Divendres, 15:00 – 19:30
             </p>
@@ -258,8 +258,25 @@
     </div>
 
 <script>
-    // ORDER NUMBER
-    const orderNum = 'FS-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random()*9999)+1).padStart(4,'0');
+    // ORDER NUMBER - S'INCREMENTA AUTOMÀTICAMENT
+    function generateOrderNumber() {
+        const currentYear = new Date().getFullYear();
+        const storageKey = 'fustes_order_counter_' + currentYear;
+        
+        // Obtenir el comptador actual de l'any (o començar des d'1)
+        let orderCounter = parseInt(localStorage.getItem(storageKey)) || 0;
+        
+        // Incrementar el comptador
+        orderCounter++;
+        
+        // Guardar el nou comptador
+        localStorage.setItem(storageKey, orderCounter);
+        
+        // Generar número de comanda amb format FS-2025-0001
+        return 'FS-' + currentYear + '-' + String(orderCounter).padStart(4, '0');
+    }
+    
+    const orderNum = generateOrderNumber();
     document.getElementById('orderNumber').textContent = orderNum;
 
     // URL PARAMS
